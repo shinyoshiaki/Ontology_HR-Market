@@ -2,7 +2,8 @@ import * as React from "react";
 
 import { storiesOf } from "@storybook/react";
 
-import Component, { HumanData, IlistBidProps } from ".";
+import Component, { IlistBidProps } from ".";
+import { HumanData } from "../../../interface";
 
 export const makeHumanDataMock = (payload: { [key in keyof HumanData]?: HumanData[key] } = {}): HumanData => {
   return Object.assign(

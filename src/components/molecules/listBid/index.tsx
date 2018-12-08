@@ -1,12 +1,6 @@
 import * as React from "react";
 import ViewComment from "../../atoms/viewComment";
-
-export interface HumanData {
-  id: string;
-  msg: string;
-  money: number;
-  timestamp: any;
-}
+import {HumanData} from '../../../interface'
 
 export interface IlistBidProps {
   listBidComments: HumanData[];

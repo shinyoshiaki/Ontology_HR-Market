@@ -2,8 +2,11 @@ import * as React from "react";
 
 import { storiesOf } from "@storybook/react";
 
-import Component, { IlistResultSearchHumanProps } from ".";
+import Component from ".";
+import { action } from "@storybook/addon-actions";
+
 import { HumanData } from "../../../interface";
+import { IlistWorkerProps } from "../../molecules/listWorkers";
 
 export const makeHumanDataMock = (payload: { [key in keyof HumanData]?: HumanData[key] } = {}): HumanData => {
   return Object.assign(
@@ -18,13 +21,13 @@ export const makeHumanDataMock = (payload: { [key in keyof HumanData]?: HumanDat
   );
 };
 
-export const makeIlistResultSearchHumanPropsMock = (
-  payload: { [key in keyof IlistResultSearchHumanProps]?: IlistResultSearchHumanProps[key] } = {}
-): IlistResultSearchHumanProps => {
+export const makeIlistWorkerPropsMock = (
+  payload: { [key in keyof IlistWorkerProps]?: IlistWorkerProps[key] } = {}
+): IlistWorkerProps => {
   return Object.assign(
     {},
     {
-      listResultSearchHumanComments: new Array(3)
+      listWorkers: new Array(3)
         .toString()
         .split(",")
         .map(() => Object.assign({}, makeHumanDataMock())),
@@ -35,8 +38,9 @@ export const makeIlistResultSearchHumanPropsMock = (
   );
 };
 
-export const ListResultSearchHumanStory = {
-  listResultSearchHumanComments: makeIlistResultSearchHumanPropsMock().listResultSearchHumanComments
+export const searchHumanOrgStory = {
+  onformSearchHuman: action("action"),
+  listWorkers: makeIlistWorkerPropsMock().listWorkers
 };
 
-storiesOf("molecules", module).add("listResultSearchHuman", () => <Component {...ListResultSearchHumanStory} />);
+storiesOf("organisms", module).add("searchHUman", () => <Component {...searchHumanOrgStory} />);

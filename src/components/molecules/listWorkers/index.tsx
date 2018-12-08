@@ -2,20 +2,17 @@ import * as React from "react";
 import ViewComment from "../../atoms/viewComment";
 import {HumanData} from '../../../interface'
 
-export interface IlistResultSearchHumanProps {
-  listResultSearchHumanComments: HumanData[];
+export interface IlistWorkerProps {
+  listWorkers: HumanData[];
   maxheight?: string;
   style?: object;
 }
 
-export interface IlistResultSearchHumanState {}
+export interface IlistWorkerState {}
 
-export default class ListResultSearchHuman extends React.Component<
-  IlistResultSearchHumanProps,
-  IlistResultSearchHumanState
-> {
+export default class ListWorkerMol extends React.Component<IlistWorkerProps, IlistWorkerState> {
   url?: string;
-  constructor(props: IlistResultSearchHumanProps) {
+  constructor(props: IlistWorkerProps) {
     super(props);
     this.state = {
       url: undefined
@@ -42,7 +39,7 @@ export default class ListResultSearchHuman extends React.Component<
           ...this.props.style
         }}
       >
-        {this.props.listResultSearchHumanComments.map((v, i) => this.renderComment(v, i))}
+        {this.props.listWorkers.map((v, i) => this.renderComment(v, i))}
       </div>
     );
   }
