@@ -4,37 +4,45 @@ import { ReduxState } from "src/createStore";
 import { Dispatch } from "redux";
 import ManageTemp from "../../components/templates/manage";
 import { ContractState } from "../../modules/contract";
+import { HumanData } from "../../interface";
 
 interface Props extends ContractState {
   dispatch: Dispatch;
   history: any;
 }
 
-interface States {}
+interface States {
+  detailHuman?: HumanData;
+}
 
 class Manage extends React.Component<Props, States> {
   constructor(props: any) {
     super(props);
-    this.state = {};
+    this.state = {
+      detailHuman: undefined
+    };
   }
 
-  onformAddWorker = () => {};
+  onformAddWorker = (human: HumanData) => {};
 
-  onformSetAddress = () => {};
+  onformSetAddress = (address: string) => {};
 
-  onViewWorker = () => {};
+  onViewWorker = (human: HumanData) => {
+    this.setState({ detailHuman: human });
+  };
 
   render() {
     const { history, listWorkers, myAddress } = this.props;
     return (
       <div>
         <ManageTemp
+          history={history}
           myAddress={myAddress ? myAddress : "error"}
           listWorkers={listWorkers}
           onformAddWorker={this.onformAddWorker}
-          history={history}
           onformSetAddress={this.onformSetAddress}
           onViewWorker={this.onViewWorker}
+          detailHuman={this.state.detailHuman}
         />
       </div>
     );

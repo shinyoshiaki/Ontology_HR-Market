@@ -13,8 +13,18 @@ export default class DetailWorkerMol extends React.Component<IdetailWorkerProps,
     super(props);
   }
 
+  renderView(human: HumanData) {
+    return (
+      <div>
+        name　{human.name}
+        <br />
+        company　{human.company}
+      </div>
+    );
+  }
+
   render() {
     const { detailHuman } = this.props;
-    return <div style={this.props.style}>{JSON.stringify(detailHuman)}</div>;
+    return <div style={this.props.style}>{detailHuman ? this.renderView(detailHuman) : undefined}</div>;
   }
 }

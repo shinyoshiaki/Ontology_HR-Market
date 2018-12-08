@@ -18,7 +18,9 @@ class Scout extends React.Component<Props, States> {
     this.state = {};
   }
 
-  onformSearchHuman = () => {};
+  onformSearchHuman = (word:string) => {
+
+  };
 
   render() {
     const { history, myAddress, listResultSearchHumans } = this.props;

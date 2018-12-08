@@ -3,7 +3,7 @@ import { TextField, Button } from "@material-ui/core";
 import { HumanData, makeHumanDataMock } from "../../../interface";
 
 export interface IformAddWorkerProps {
-  onformAddWorker: (v?: HumanData) => void;
+  onformAddWorker: (v: HumanData) => void;
 }
 
 const initialState: HumanData = makeHumanDataMock();

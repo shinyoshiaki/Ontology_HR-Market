@@ -4,8 +4,7 @@ import { ReduxState } from "src/createStore";
 import { Dispatch } from "redux";
 import MarketTemp from "../../components/templates/market";
 import { drawerList } from "./const";
-import { makeHumanDataMock } from "../../interface";
-import { ContractState } from '../../modules/contract';
+import { ContractState } from "../../modules/contract";
 
 interface Props extends ContractState {
   dispatch: Dispatch;
@@ -23,15 +22,15 @@ class Market extends React.Component<Props, States> {
   onformBitWorker = () => {};
 
   render() {
-    const { history ,myAddress} = this.props;
+    const { history, myAddress, detailHuman, listBid } = this.props;
     return (
       <div>
         <MarketTemp
+          history={history}
           myAddress={myAddress ? myAddress : "error"}
           drawerMolList={drawerList}
-          history={history}
-          detailHuman={makeHumanDataMock()}
-          listBid={[]}
+          detailHuman={detailHuman}
+          listBid={listBid}
           onformBitWorker={this.onformBitWorker}
         />
       </div>

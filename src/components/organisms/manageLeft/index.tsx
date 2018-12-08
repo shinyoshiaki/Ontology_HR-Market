@@ -35,7 +35,7 @@ export default class ManageLeftOrg extends React.Component<ImanageLeftOrgProps, 
             <ListWorkerMol {...this.props} />
           </div>
           <Button onClick={this.handleModalOpen} style={{ marginTop: "auto" }}>
-            test
+            社員を加える
           </Button>
         </div>
         <Modal

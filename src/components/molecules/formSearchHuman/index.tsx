@@ -2,7 +2,7 @@ import * as React from "react";
 import { TextField, Button } from "@material-ui/core";
 
 export interface IformSearchHumanProps {
-  onformSearchHuman: (v?: string) => void;
+  onformSearchHuman: (v: string) => void;
 }
 
 export interface IformSearchHumanState {
