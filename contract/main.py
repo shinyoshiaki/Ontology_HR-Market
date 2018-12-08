@@ -98,15 +98,37 @@ def ReadBids(personAddr):
     
     
     return bidsJson
+
+
+def ReadAuction(auctionAddr):
+    # get auction entity
+    auctionJSON = Get(ctx, concat('auction_',personAddr))
+    auction = json.loads(auction)
+
+    return auction
     
 def CloseAuction(personAddr):
-    # get auction entity
+    # get highest bid
+    bids = ReadBids(personAddr)
+    highestBids = bids.sorted(bids, key=lambda bid:bid['price'])
+    if highestBids.index <= 0
+        return False
 
-    # get next company address    
+    amount = highestBids[0]['price']
+    nextCompanyAddress = highestBids['company_address']
+
     # check amount of next company address
+    if amount > balanceOf(nextCompanyAddress):
+        return False
     
     # get current company address
+    personData = ReadPerson(personAddr)
+    currentCompanyAddress = personData['company']
+    
     # transfer
+    TransferEvent(nextCompanyAddress, currentCompanyAddress, amount)
     
     # change company
+    personData['company'] = nextCompanyAddress
+    RegisterPerson(personAddr, nextInfo)
     
