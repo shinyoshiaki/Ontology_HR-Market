@@ -5,6 +5,7 @@ import { Dispatch } from "redux";
 import { Walletstate } from "../../modules/wallet";
 import MarketTemp from "../../components/templates/market";
 import { drawerList } from "./const";
+import { makeHumanDataMock } from "../../interface";
 
 interface Props extends Walletstate {
   dispatch: Dispatch;
@@ -19,12 +20,20 @@ class Market extends React.Component<Props, States> {
     this.state = {};
   }
 
+  onformBitWorker = () => {};
+
   render() {
     const { history } = this.props;
     return (
       <div>
-        <MarketTemp myAddress="test" drawerMolList={drawerList} history={history} />
-        something
+        <MarketTemp
+          myAddress="test"
+          drawerMolList={drawerList}
+          history={history}
+          human={makeHumanDataMock()}
+          listBid={[]}
+          onformBitWorker={this.onformBitWorker}
+        />
       </div>
     );
   }

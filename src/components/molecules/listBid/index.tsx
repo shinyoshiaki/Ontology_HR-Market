@@ -1,18 +1,18 @@
 import * as React from "react";
-import {HumanData} from '../../../interface'
+import { HumanData } from "../../../interface";
+
+export interface Ibid {
+  human: HumanData[];
+  amount: number;
+}
 
 export interface IlistBidProps {
-  listBidComments: HumanData[];
-  maxheight?: string;
-  style?: object;
+  listBid: Ibid[];
 }
 
 export interface IlistBidState {}
 
-export default class ListBidMol extends React.Component<
-  IlistBidProps,
-  IlistBidState
-> {
+export default class ListBidMol extends React.Component<IlistBidProps, IlistBidState> {
   url?: string;
   constructor(props: IlistBidProps) {
     super(props);
@@ -21,29 +21,12 @@ export default class ListBidMol extends React.Component<
     };
   }
 
-  private renderComment(human: HumanData, i: number) {
+  private renderComment(human: Ibid, i: number) {
     return JSON.stringify(human);
     //  <ViewComment id={comment.id} msg={comment.msg} key={i} />;
   }
 
   render() {
-    const { maxheight } = this.props;
-    return (
-      <div
-        style={{
-          border: "1px solid",
-          borderRadius: 4,
-          borderWidth: 0.5,
-          borderColor: "#d6d7da",
-          margin: 3,
-          padding: 10,
-          maxHeight: maxheight ? maxheight : "50vh",
-          overflow: "scroll",
-          ...this.props.style
-        }}
-      >
-        {this.props.listBidComments.map((v, i) => this.renderComment(v, i))}
-      </div>
-    );
+    return <div>{this.props.listBid.map((v, i) => this.renderComment(v, i))}</div>;
   }
 }

@@ -3,8 +3,7 @@ import { connect } from "react-redux";
 import { ReduxState } from "src/createStore";
 import { Dispatch } from "redux";
 import { Walletstate } from "../../modules/wallet";
-// import MarketTemp from "../../components/templates/market";
-// import { drawerList } from "./const";
+import ManageTemp from "../../components/templates/manage";
 
 interface Props extends Walletstate {
   dispatch: Dispatch;
@@ -19,11 +18,12 @@ class Manage extends React.Component<Props, States> {
     this.state = {};
   }
 
+  onformAddWorker = () => {};
   render() {
-    // const { history } = this.props;
+    const { history } = this.props;
     return (
       <div>
-        something
+        <ManageTemp myAddress="" listWorkers={[]} onformAddWorker={this.onformAddWorker} history={history} />
       </div>
     );
   }

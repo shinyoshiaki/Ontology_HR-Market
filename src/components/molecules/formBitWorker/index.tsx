@@ -13,7 +13,7 @@ const initialState = {
   amount: 0
 };
 
-export default class FormBitWorker extends React.Component<IformBitWorkerProps, IformBitWorkerState> {
+export default class FormBitWorkerMol extends React.Component<IformBitWorkerProps, IformBitWorkerState> {
   constructor(props: IformBitWorkerProps) {
     super(props);
     this.state = initialState;

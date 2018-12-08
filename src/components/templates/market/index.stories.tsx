@@ -2,7 +2,18 @@ import * as React from "react";
 
 import { storiesOf } from "@storybook/react";
 
-import Component from ".";
-import { makeIdrawerMolPropsMock } from "../../molecules/drawer/index.stories";
+import Component, { IMarketTempProps } from ".";
 
-storiesOf("templates", module).add("market", () => <Component myAddress="test" {...makeIdrawerMolPropsMock()} />);
+import { makeHumanDataMock, makeIlistBidPropsMock } from "../../../interface";
+import { action } from "@storybook/addon-actions";
+
+export const marketStory: IMarketTempProps = {
+  myAddress: "test",
+  human: makeHumanDataMock(),
+  listBid: makeIlistBidPropsMock().listBid,
+  onformBitWorker: () => {
+    action("action");
+  }
+};
+
+storiesOf("templates", module).add("market", () => <Component {...marketStory} />);

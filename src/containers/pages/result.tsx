@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import { ReduxState } from "src/createStore";
 import { Dispatch } from "redux";
 import { Walletstate } from "../../modules/wallet";
-import MarketTemp from "../../components/templates/market";
-import { drawerList } from "./const";
+// import MarketTemp from "../../components/templates/market";
+// import { drawerList } from "./const";
 
 interface Props extends Walletstate {
   dispatch: Dispatch;
@@ -20,14 +20,9 @@ class Result extends React.Component<Props, States> {
   }
 
   render() {
-    const { history } = this.props;
-    return (
-      <div>
-        <MarketTemp myAddress="test" drawerMolList={drawerList} history={history} />
-        something
-      </div>
-    );
+    // const { history } = this.props;
+    return <div>something</div>;
   }
 }
 
-export default connect((state: ReduxState) => Object.assign({},  state.wallet))(Result);
+export default connect((state: ReduxState) => Object.assign({}, state.wallet))(Result);
