@@ -2,10 +2,13 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import createStore from "./createStore";
-import Main from "./containers/pages/main";
 import { HashRouter as Router, Route } from "react-router-dom";
 import Stream from "./containers/pages/stream";
 import * as Ontology from "ontology-dapi";
+import buy from "./containers/pages/buy";
+import sell from "./containers/pages/sell";
+import market from "./containers/pages/market";
+import result from "./containers/pages/result";
 
 const data = createStore();
 Ontology.client.registerClient({});
@@ -22,7 +25,10 @@ ReactDOM.render(
   <Provider store={data.store}>
     <Router>
       <div>
-        <Route exact path="/" component={Main} />
+        <Route exact path="/" component={buy} />
+        <Route path="/sell" component={sell} />
+        <Route path="/market" component={market} />
+        <Route path="/result" component={result} />
         <Route path="/stream" component={Stream} />
       </div>
     </Router>

@@ -12,10 +12,7 @@ interface IheaderOrgState {
   drawerOpen: boolean;
 }
 
-export default class HeaderOrg extends React.Component<
-  IheaderOrgProps,
-  IheaderOrgState
-> {
+export default class HeaderOrg extends React.Component<IheaderOrgProps, IheaderOrgState> {
   url?: string;
   constructor(props: IheaderOrgProps) {
     super(props);
@@ -33,31 +30,18 @@ export default class HeaderOrg extends React.Component<
       <div>
         <AppBar position="static">
           <Toolbar style={{ display: "flexbox" }}>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={this.handleSwitchDrawer}
-            >
+            <IconButton color="inherit" aria-label="open drawer" onClick={this.handleSwitchDrawer}>
               <MenuIcon />
             </IconButton>
             <Typography variant="title" color="inherit" noWrap>
-              Ontology Live
+              ハッカソン
             </Typography>
-            <Typography
-              variant="title"
-              color="inherit"
-              noWrap
-              style={{ marginLeft: "auto" }}
-            >
+            <Typography variant="title" color="inherit" noWrap style={{ marginLeft: "auto" }}>
               {this.props.myAddress}
             </Typography>
           </Toolbar>
         </AppBar>
-        <DrawerMol
-          {...this.props}
-          drawerMolClose={this.handleSwitchDrawer}
-          drawerOpen={this.state.drawerOpen}
-        />
+        <DrawerMol {...this.props} drawerMolClose={this.handleSwitchDrawer} drawerOpen={this.state.drawerOpen} />
       </div>
     );
   }

@@ -8,6 +8,7 @@ import { CommentData } from "../../components/molecules/listComment";
 import { Modal } from "@material-ui/core";
 import FormSuperChat from "../../components/molecules/formSuperChat";
 import { setWalletValue, EwalletValue, Walletstate, setMyAddress } from "../../modules/wallet";
+import { drawerList } from './const';
 
 interface Props extends Chatstate, Walletstate {
   dispatch: Dispatch;
@@ -18,7 +19,6 @@ interface States {
   modalOpen: boolean;
 }
 
-export const drawerList = [{ address: "", label: "watch" }, { address: "stream", label: "stream" }];
 
 class Main extends React.Component<Props, States> {
   isListenComments = false;

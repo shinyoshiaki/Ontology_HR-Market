@@ -5,7 +5,7 @@ import { Dispatch } from "redux";
 import { Chatstate, listenSuperChats } from "../../modules/chat";
 import { Walletstate, setMyAddress } from "../../modules/wallet";
 import StreamTemp from "../../components/templates/stream";
-import { drawerList } from "./main";
+import { drawerList } from "./const";
 
 interface Props extends Chatstate, Walletstate {
   dispatch: Dispatch;
