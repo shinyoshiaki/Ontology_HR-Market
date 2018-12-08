@@ -13,7 +13,18 @@ export default class ResultRightOrg extends React.Component<IresultRightOrgProps
     return (
       <div>
         <DetailWorkerMol {...this.props} />
-        <FormResultApproveMol {...this.props} />
+        <div
+          style={{
+            textAlign: "center"
+          }}>
+          <p>
+            雇用契約完了後に押下してください。
+          </p>
+          <p>
+            受け入れ元の企業へ確認ののち人事データを移植します。
+          </p>
+          <FormResultApproveMol {...this.props} />
+        </div>
       </div>
     );
   }

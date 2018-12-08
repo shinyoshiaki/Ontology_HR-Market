@@ -14,8 +14,23 @@ export default class ManageTemp extends React.Component<ImangeTempProps, {}> {
     return (
       <div>
         <HeaderOrg {...this.props} />
-        <ManageLeftOrg {...this.props} />
-        <ManageRightOrg {...this.props} />
+        <div
+          style={{
+            display: "inline-block",
+            width: "280px"
+          }}
+        >
+          <ManageLeftOrg {...this.props} />
+        </div>
+        <div
+          style={{
+            display: "inline-block",
+            width: "calc(100% - 280px)",
+            verticalAlign: "top"
+          }}
+        >
+          <ManageRightOrg {...this.props} />
+        </div>
       </div>
     );
   }

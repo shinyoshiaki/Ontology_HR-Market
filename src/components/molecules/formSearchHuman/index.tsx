@@ -24,6 +24,7 @@ export default class FormSearchHuman extends React.Component<
     return (
       <div
         style={{
+          width: "280px",
           border: "1px solid",
           borderRadius: 4,
           borderWidth: 0.5,
@@ -37,14 +38,16 @@ export default class FormSearchHuman extends React.Component<
             this.setState({ url: e.target.value });
           }}
           value={this.state.url}
-          label="url"
-          style={{ width: "80%" }}
+          label="求人条件"
+          style={{ display: "inline-block", }}
         />
         <Button
           onClick={() => {
             this.props.onformSearchHuman(this.state.url);
             this.setState({ url: "" });
           }}
+          style={{ width: "20%", display: "inline-block", verticalAlign: "bottom" }}
+          
         >
           open
         </Button>

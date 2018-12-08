@@ -39,6 +39,7 @@ export default class ListResultSearchHuman extends React.Component<
           padding: 10,
           maxHeight: maxheight ? maxheight : "50vh",
           overflow: "scroll",
+          width: "calc(100% - 280px)",
           ...this.props.style
         }}
       >

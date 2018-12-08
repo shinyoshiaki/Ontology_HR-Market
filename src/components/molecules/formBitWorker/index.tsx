@@ -27,12 +27,15 @@ export default class FormBitWorkerMol extends React.Component<IformBitWorkerProp
             this.setState({ amount: parseInt(e.target.value, 10) });
           }}
           value={this.state.amount}
-          label="amount"
+          label="入札額"
         />
         <Button
           onClick={() => {
             this.props.onformBitWorker(this.state.amount);
             this.setState(initialState);
+          }}
+          style={{
+            verticalAlign: "bottom"
           }}
         >
           bit

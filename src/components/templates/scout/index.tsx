@@ -12,7 +12,11 @@ export default class ScoutTemp extends React.Component<IScoutTempProps, {}> {
   public render() {
     return (
       <div>
-        <HeaderOrg {...this.props} />
+        <HeaderOrg {...this.props}
+          style={{
+            margin:"0px"
+          }}
+        />
         <SearchHumanOrg {...this.props} />
       </div>
     );

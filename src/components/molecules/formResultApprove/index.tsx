@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Button } from "@material-ui/core";
+import BasicButton from "../../atoms/basicButton";
 
 export interface IformResultApproveProps {
   onformResultApprove: () => void;
@@ -18,15 +18,14 @@ export default class FormResultApproveMol extends React.Component<IformResultApp
   render() {
     return (
       <div>
-        ok?
-        <Button
+        <BasicButton
           onClick={() => {
             this.props.onformResultApprove();
             this.setState(initialState);
           }}
         >
           approve
-        </Button>
+        </BasicButton>
       </div>
     );
   }

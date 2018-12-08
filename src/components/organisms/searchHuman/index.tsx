@@ -14,8 +14,13 @@ export default class SearchHumanOrg extends React.Component<IsearchHumanOrgProps
   public render() {
     return (
       <div style={this.props.style}>
-        <FormSearchHuman {...this.props} />
-        <ListResultSearchHuman {...this.props} />
+        <div 
+          style={{
+            display: "flex"
+          }}>
+          <FormSearchHuman {...this.props} />
+          <ListResultSearchHuman {...this.props} />
+        </div>
       </div>
     );
   }

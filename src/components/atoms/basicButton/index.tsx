@@ -5,7 +5,7 @@ interface Props {
   onClick: (v: any) => void;
 }
 
-export default class TestButton extends React.Component<Props, {}> {
+export default class BasicButton extends React.Component<Props, {}> {
   constructor(props: Props) {
     super(props);
   }
@@ -13,7 +13,11 @@ export default class TestButton extends React.Component<Props, {}> {
   public render() {
     return (
       <div>
-        <Button onClick={this.props.onClick}>click</Button>
+        <Button
+          style={{ backgroundColor:"#333",
+            color:"#FFF" 
+          }}
+          onClick={this.props.onClick}>click</Button>
       </div>
     );
   }

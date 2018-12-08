@@ -35,15 +35,20 @@ export default class HeaderOrg extends React.Component<IheaderOrgProps, IheaderO
     return (
       <div>
         <AppBar position="static">
-          <Toolbar style={{ display: "flexbox" }}>
+          <Toolbar
+            style={{
+              display: "flexbox",
+              backgroundColor: "#db1456",
+              }}
+            >
             <IconButton color="inherit" aria-label="open drawer" onClick={this.handleSwitchDrawer}>
               <MenuIcon />
             </IconButton>
             <Typography variant="title" color="inherit" noWrap>
-              ハッカソン
+              ((ツール名))
             </Typography>
             <Typography variant="title" color="inherit" noWrap style={{ marginLeft: "auto" }}>
-              {this.props.myAddress}
+              ログインID： {this.props.myAddress}
             </Typography>
           </Toolbar>
         </AppBar>

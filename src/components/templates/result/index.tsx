@@ -16,8 +16,25 @@ export default class ResultTemp extends React.Component<IResultTempProps, IResul
     return (
       <div>
         <HeaderOrg {...this.props} />
-        <ListResultBitMol {...this.props} />
-        <ResultRightOrg {...this.props} />
+        <div
+          style={{
+            display: "inline-block",
+            width: "280px"
+          }}
+        >
+          <p>オークションスカウト済み　人員一覧</p>
+          <p>クリックで詳細情報</p>
+
+          <ListResultBitMol {...this.props} />
+        </div>
+        <div
+          style={{
+            display: "inline-block",
+            width: "calc(100% - 280px)"
+          }}
+        >
+          <ResultRightOrg {...this.props} />
+        </div>
       </div>
     );
   }
