@@ -1,8 +1,9 @@
 import * as React from "react";
-import ListWorkerMol, { IlistWorkerProps } from "../../molecules/listWorkers";
-import { Button } from "@material-ui/core";
+import DetailWorkerMol from "../../molecules/detailWorker";
+import { HumanData } from "../../../interface";
 
-export interface ImanageLeftOrgProps extends IlistWorkerProps {
+export interface ImanageLeftOrgProps {
+  human?: HumanData;
   style?: object;
 }
 
@@ -12,11 +13,7 @@ export default class ManageLeftOrg extends React.Component<ImanageLeftOrgProps, 
   }
 
   public render() {
-    return (
-      <div style={this.props.style}>
-        <ListWorkerMol {...this.props} />
-        <Button>test</Button>
-      </div>
-    );
+    const { human } = this.props;
+    return <div>{human ? <DetailWorkerMol human={human} /> : undefined}</div>;
   }
 }

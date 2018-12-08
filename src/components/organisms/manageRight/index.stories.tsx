@@ -3,11 +3,10 @@ import * as React from "react";
 import { storiesOf } from "@storybook/react";
 
 import Component from ".";
-import { action } from "@storybook/addon-actions";
+import { detailWorkerStory } from "../../molecules/detailWorker/index.stories";
 
 export const manageLeftOrgStory = {
-  onformSearchHuman: action("action"),
-  listWorkers: []
+  ...detailWorkerStory
 };
 
-storiesOf("organisms", module).add("manageLeft", () => <Component {...manageLeftOrgStory} />);
+storiesOf("organisms", module).add("manageRight", () => <Component {...manageLeftOrgStory} />);
