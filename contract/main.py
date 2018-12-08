@@ -1,9 +1,14 @@
 from boa.interop.System.Runtime import Log
 from boa.interop.System.Runtime import Notify
 from boa.interop.System.Storage import Put, GetContext, Get, Delete
-from boa.builtins import concat
+from boa.builtins import concat,Serialize,Deserialize
+from boa.interop.Ontology.Native import Invoke
+
+MESIToken = RegisterAppCall('fa80553aec57a57d406cde1549b47f0bad96f7c4', 'operation', 'args')
+
 
 ctx = GetContext()
+contractAddress = bytearray(b'\xc4\xf7\x96\xad\x0b\x7f\xb4\x49\x15\xde\x6c\x40\x7d\xa5\x57\xec\x3a\x55\x80\xfa')
 
 def Main(operation, args):
     if operation == 'Hello': # operationを見てDispatch
@@ -22,6 +27,13 @@ def Main(operation, args):
     if operation == 'ReadCompany':
         return ReadCompany(args[0])
     
+    if operation == 'CloseAuction':
+        return CloseAuction(args[0])
+    
+    if operation == 'transfer':
+        return transfer(args[0],args[1],args[2])
+
+
     return False
     
 def Hello(msg):
@@ -47,8 +59,7 @@ def ReadPerson(personAddr):
 
 def RegisterCompany(companyAddr, info):
     key = concat("company_", companyAddr)
-    Put(ct, key, info)
-    
+    Put(ctx, key, info)
     return True
     
 def ReadCompany(companyAddr):
@@ -58,77 +69,87 @@ def ReadCompany(companyAddr):
 
     return v
     
-def RegisterBid(personAddr, companyAddr, price):
-    # check date
-    
-    # check auction
-    if true:
-        # exit
-    else:
-        # create auction
 
-#    # generate random
-#    key = ''
-    # read last index
-    idx = 0
-    idx = idx + 1
-    key = concat(concat(concat('bid_', personAddr), '_'), idx)
     
-    # create info json
-    info = ''
-    Put(ctx, key, info)
-    
-    # register latest bid index
-    Put(ctx, concat('latest_bid_index_', personAddr), idx)
-    
-    return True
-    
-def ReadBids(personAddr):
-    
-    bids = []
-    
+def ReadBids(auctionAddr):
+    bids = list()
     # get latest bid index
-    idx = Get(ctx, concat('latest_bid_index_', personAddr));
+    idx = Get(ctx, concat('latest_bid_index_', auctionAddr));
     for i in range(idx):
-        key = concat(concat('bid_', personAddr), i)
+        key = concat(concat('bid_', auctionAddr), i)
         v = Get(ctx, key)
-        if !v:
+        if v:
             bids.append(v)
-    bidsJson = json.Serialize(bids)
+        
     
-    
-    return bidsJson
+    return bids
 
 
 def ReadAuction(auctionAddr):
     # get auction entity
-    auctionJSON = Get(ctx, concat('auction_',personAddr))
-    auction = json.loads(auction)
+    ReadBids(auctionAddr)
+    return Get(ctx, concat('auction_',auctionAddr))
 
-    return auction
-    
 def CloseAuction(personAddr):
+    
     # get highest bid
-    bids = ReadBids(personAddr)
-    highestBids = bids.sorted(bids, key=lambda bid:bid['price'])
-    if highestBids.index <= 0
+    bids = []
+    # get latest bid index
+    idx = Get(ctx, concat('latest_bid_index_', personAddr));
+    if idx <= 0 :
         return False
+    
+    i = 0
+    while i < idx:
+        key = concat(concat('bid_', personAddr), i)
+        v = Get(ctx, key)
+        if v:
+            bids.append(v)
+    
+    highestBids = getHighestBid(bids)
 
-    amount = highestBids[0]['price']
+    amount = highestBids['price']
     nextCompanyAddress = highestBids['company_address']
 
     # check amount of next company address
-    if amount > balanceOf(nextCompanyAddress):
-        return False
+#    if amount > BalanceOf(nextCompanyAddress):
+ #       return False
     
     # get current company address
     personData = ReadPerson(personAddr)
     currentCompanyAddress = personData['company']
-    
+        
     # transfer
-    TransferEvent(nextCompanyAddress, currentCompanyAddress, amount)
+    transfer(nextCompanyAddress, currentCompanyAddress, amount)
     
     # change company
     personData['company'] = nextCompanyAddress
-    RegisterPerson(personAddr, nextInfo)
+    RegisterPerson(personAddr, personData)
     
+    
+
+def getHighestBid(bids):
+    high = bids[0]
+    for bid in bids:
+        if bid["price"] > high['price']:
+            high = bid
+            
+    return high
+    
+
+def transfer(fromacct, toacct, amount):
+
+    res = MESIToken( 'transfer', [fromacct, toacct, amount])
+    Notify(res)
+
+    if res and res == b'\x01':
+        Notify('transfer succeed')
+        return True
+    else:
+        Notify('transfer failed')
+
+        return False
+
+
+def makeState(fromacct, toacct, amount):
+    return state(fromacct, toacct, amount)
