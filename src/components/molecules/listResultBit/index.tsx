@@ -1,7 +1,8 @@
 import * as React from "react";
 import { HumanData } from "../../../interface";
+import ViewBitResult, { IviewBitResultProps } from "../../atoms/viewBitResult";
 
-export interface IlistResultBitProps {
+export interface IlistResultBitProps extends IviewBitResultProps {
   listResultBit: HumanData[];
 }
 
@@ -14,7 +15,7 @@ export default class ListResultBitMol extends React.Component<IlistResultBitProp
   }
 
   private renderComment(human: HumanData, i: number) {
-    return JSON.stringify(human);
+    return <ViewBitResult {...this.props} resultHuman={human} />;
     // <ViewComment id={comment.id} msg={comment.msg} key={i} />;
   }
 
