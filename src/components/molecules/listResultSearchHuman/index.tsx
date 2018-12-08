@@ -1,7 +1,8 @@
 import * as React from "react";
 import { HumanData } from "../../../interface";
+import ViewScout, { IviewScoutProps } from "../../atoms/viewScout";
 
-export interface IlistResultSearchHumanProps {
+export interface IlistResultSearchHumanProps extends IviewScoutProps {
   listResultSearchHumans: HumanData[];
   maxheight?: string;
   style?: React.CSSProperties;
@@ -22,7 +23,7 @@ export default class ListResultSearchHuman extends React.Component<
   }
 
   private renderComment(human: HumanData, i: number) {
-    return JSON.stringify(human);
+    return <ViewScout {...this.props} humanScout={human} key={i} />;
     // <ViewComment id={comment.id} msg={comment.msg} key={i} />;
   }
 

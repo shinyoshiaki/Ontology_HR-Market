@@ -4,6 +4,7 @@ import { ReduxState } from "src/createStore";
 import { Dispatch } from "redux";
 import ScoutTemp from "../../components/templates/scout";
 import { ContractState } from "../../modules/contract";
+import { HumanData } from "../../interface";
 
 interface Props extends ContractState {
   dispatch: Dispatch;
@@ -18,9 +19,9 @@ class Scout extends React.Component<Props, States> {
     this.state = {};
   }
 
-  onformSearchHuman = (word:string) => {
+  onformSearchHuman = (word: string) => {};
 
-  };
+  onViewScout = (human: HumanData) => {};
 
   render() {
     const { history, myAddress, listResultSearchHumans } = this.props;
@@ -31,6 +32,7 @@ class Scout extends React.Component<Props, States> {
           history={history}
           onformSearchHuman={this.onformSearchHuman}
           listResultSearchHumans={listResultSearchHumans}
+          onViewScout={this.onViewScout}
         />
       </div>
     );

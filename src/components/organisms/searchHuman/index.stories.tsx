@@ -2,12 +2,13 @@ import * as React from "react";
 
 import { storiesOf } from "@storybook/react";
 
-import Component from ".";
-import { action } from "@storybook/addon-actions";
+import Component, { IsearchHumanOrgProps } from ".";
 
-export const searchHumanOrgStory = {
-  onformSearchHuman: action("action"),
-  listResultSearchHumans: []
+import { formSearchHumanStory } from "../../molecules/formSearchHuman/index.stories";
+import { ListResultSearchHumanStory } from "../../molecules/listResultSearchHuman/index.stories";
+
+export const searchHumanOrgStory: IsearchHumanOrgProps = {
+  ...Object.assign({}, formSearchHumanStory, ListResultSearchHumanStory)
 };
 
 storiesOf("organisms", module).add("searchHUman", () => <Component {...searchHumanOrgStory} />);

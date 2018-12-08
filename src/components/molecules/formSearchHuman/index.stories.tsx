@@ -5,6 +5,6 @@ import { storiesOf } from "@storybook/react";
 import Component from ".";
 import { action } from "@storybook/addon-actions";
 
-storiesOf("molecules", module).add("formSearchHuman", () => (
-  <Component onformSearchHuman={action("openurl")} />
-));
+export const formSearchHumanStory = { onformSearchHuman: action("openurl") };
+
+storiesOf("molecules", module).add("formSearchHuman", () => <Component {...formSearchHumanStory} />);
