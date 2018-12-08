@@ -1,8 +1,8 @@
 import * as React from "react";
 import { HumanData } from "../../../interface";
-import ViewBitResult, { IviewBitResultProps } from "../../atoms/viewBitResult";
+import ViewAuctionResult, { IviewAuctionResultProps } from "../../atoms/viewAuctionResult";
 
-export interface IlistResultAuctionProps extends IviewBitResultProps {
+export interface IlistResultAuctionProps extends IviewAuctionResultProps {
   listResultAuction: HumanData[];
   style?: React.CSSProperties;
 }
@@ -16,7 +16,7 @@ export default class ListResultAuctionMol extends React.Component<IlistResultAuc
   }
 
   private renderComment(human: HumanData, i: number) {
-    return <ViewBitResult {...this.props} resultHuman={human} key={i} />;
+    return <ViewAuctionResult {...this.props} resultHuman={human} key={i} />;
   }
 
   render() {

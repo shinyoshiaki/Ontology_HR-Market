@@ -1,5 +1,6 @@
 import * as React from "react";
 import { HumanData } from "../../../interface";
+import ViewBid from "../../atoms/viewBid";
 
 export interface Ibid {
   human: HumanData[];
@@ -21,9 +22,8 @@ export default class ListBidMol extends React.Component<IlistBidProps, IlistBidS
     };
   }
 
-  private renderComment(human: Ibid, i: number) {
-    return JSON.stringify(human);
-    //  <ViewComment id={comment.id} msg={comment.msg} key={i} />;
+  private renderComment(bid: Ibid, i: number) {
+    return <ViewBid viewBid={bid} key={i} />;
   }
 
   render() {

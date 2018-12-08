@@ -3,6 +3,7 @@ import { TextField, Button } from "@material-ui/core";
 
 export interface IformBitWorkerProps {
   onformBitWorker: (v?: number) => void;
+  style?: React.CSSProperties;
 }
 
 export interface IformBitWorkerState {
@@ -21,7 +22,7 @@ export default class FormBitWorkerMol extends React.Component<IformBitWorkerProp
 
   render() {
     return (
-      <div>
+      <div style={this.props.style}>
         <TextField
           onChange={e => {
             this.setState({ amount: parseInt(e.target.value, 10) });

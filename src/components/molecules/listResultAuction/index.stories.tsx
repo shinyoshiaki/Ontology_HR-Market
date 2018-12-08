@@ -5,9 +5,9 @@ import Component, { IlistResultAuctionProps } from ".";
 import { makeHumanDatasMock } from "../../../interface";
 import { action } from "@storybook/addon-actions";
 
-export const listResultBitStory: IlistResultAuctionProps = {
+export const listResultAuctionStory: IlistResultAuctionProps = {
   listResultAuction: makeHumanDatasMock().datas,
-  onViewBitResult: action("action")
+  onViewAuctionResult: action("action")
 };
 
-storiesOf("molecules", module).add("listResultAuction", () => <Component {...listResultBitStory} />);
+storiesOf("molecules", module).add("listResultAuction", () => <Component {...listResultAuctionStory} />);

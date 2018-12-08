@@ -34,7 +34,8 @@ enum ActionNames {
 
 export enum EcontractValue {
   myAddress = "myAddress",
-  listWorkers = "listWorkers"
+  listWorkers = "listWorkers",
+  detailHuman = "detailHuman"
 }
 
 interface SetValueAction extends Action {

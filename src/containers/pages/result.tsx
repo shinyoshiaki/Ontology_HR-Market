@@ -23,7 +23,7 @@ class Result extends React.Component<Props, States> {
     };
   }
 
-  onViewBitResult = (human: HumanData) => {
+  onViewAuctionResult = (human: HumanData) => {
     this.setState({ human });
   };
 
@@ -39,7 +39,7 @@ class Result extends React.Component<Props, States> {
           history={history}
           myAddress={myAddress ? myAddress : "error"}
           listResultAuction={listResultAuction}
-          onViewBitResult={this.onViewBitResult}
+          onViewAuctionResult={this.onViewAuctionResult}
           detailHuman={this.state.human}
           onformResultApprove={this.onformResultApprove}
         />
