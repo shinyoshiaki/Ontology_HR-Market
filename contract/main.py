@@ -1,7 +1,5 @@
-from boa.interop.System.Runtime import Log
-from boa.interop.System.Runtime import Notify
 from boa.interop.System.Storage import Put, GetContext, Get, Delete
-from boa.interop.System.Runtime import Notify, Serialize, Deserialize
+from boa.interop.System.Runtime import Notify, Serialize, Deserialize, GetTime, Notify, Log
 from boa.builtins import concat
 
 ctx = GetContext()
@@ -16,7 +14,10 @@ def Main(operation, args):
     
     if operation == 'RegisterCompany':
         return RegisterCompany(args[0], args[1])
-        
+    
+    if operation == 'RegisterCompanyPerson':
+        return RegisterCompanyPerson(args[0], args[1])
+    
     if operation == 'ReadCompany':
         return ReadCompany(args[0])
     
@@ -31,49 +32,51 @@ def Main(operation, args):
         
     return False
 
-def concatAll(values):
-    info = ''
-    for i in range(0, len(values)):
-        if (i != 0):
-            info = concat(info, '$')
-        info = concat(info, values[i])
-        
-    return info
-
 
 def RegisterPerson(personAddr, name, company):
     key = concat("person_", personAddr)
-    info = concatAll([name, company])
+    val = makeValue([name, company])
 
-    Put(ctx, key, info)
+    Put(ctx, key, val)
 
     return True
     
-def RegisterPerson_(personAddr, name, company):
-    Notify(personAddr)
-    key = concat("person_", personAddr)
-    info = {
-        'company': company
-    }
-
-    Put(ctx, key, Serialize(info))
-
-    return True
-
 def ReadPerson(personAddr):
     key = concat("person_", personAddr)
     v = Get(ctx, key)
     Notify(v)
     
-    info = Deserialize(v)
-    Notify('company:' + info['company'])
-    infoList = ['company:' + info['company']]
-    return infoList
+    val = Deserialize(v)
+    Notify('company:' + val['company'])
+    valList = ['company:' + val['company']]
+    return valList
 
-def RegisterCompany(companyAddr, info):
-    key = concat("company_", companyAddr)
-    Put(ctx, key, info)
+def RegisterCompany(companyAddr, name):
+    key = concat('company_', companyAddr)
+    Put(ctx, key, name)
     
+    return True
+    
+def RegisterCompanyPerson(companyAddr, personAddr):
+    key = concatAll(['company_', companyAddr, '_persons'])
+    Notify(key)
+    keyM = concatAll(['company_', companyAddr, '_persons_map'])
+    Notify(keyM)
+    curVal = Get(ctx, keyM)
+    curValList = []
+    if curVal is not None:
+        curValList = Deserialize(curVal)
+    
+    for i in range(0, len(curValList)):
+        if personAddr == curValList[i]:
+            Notify('duplicated')
+            return True
+    
+    curValList.append(personAddr)
+    val = makeValue(curValList)
+    
+    Put(ctx, key, val)
+    Put(ctx, keyM, Serialize(curValList))
     return True
     
 def ReadCompany(companyAddr):
@@ -84,54 +87,34 @@ def ReadCompany(companyAddr):
     return v
 
 def RegisterAuction(personAddr, currentCompanyAddr, start, end):
-    map = {
-        "person_address": personAddr,
-        "current_company_address": currentCompanyAddr,
-        "start": str(start),
-        "end": str(end)
+    val = makeValue([personAddr, currentCompanyAddr, start, end])
+    valMap = {
+        'person_address': personAddr,
+        'current_company_address': currentCompanyAddr,
+        'start': start,
+        'end': end
     }
 
-    Notify(Serialize(map))
-    Put(ctx, concat('auction_', personAddr), Serialize(map))
+    Put(ctx, concat('auction_', personAddr), val)
+    Put(ctx, concatAll(['auction_', personAddr, '_map']), Serialize(valMap))
     
     return True
 
-#def ReadAuction():
-#    personAddr = 'aaa'
-#    mapInfo = Get(ctx, concat('auction_', personAddr))
-    
-#    list = ['person_address:' + mapInfo['person_address']]
-#    return lest
-
-# def getAuction():
-#     mapInfo = Get(ctx, concat('auction_', personAddr))
-#     map1 = Deserialize(mapInfo)
-#     pA = map1["person_address"]
-#     # return map1, wrong
-#     cCA = map1["person_address"]
-#     # return [pA, cCA] correct
-#     list1 = []
-#     list1.appen
-
 def RegisterBid(personAddr, companyAddr, price):
     # check date 
-    auction = Get(ctx, concat('auction_', personAddr))
+    auction = Get(ctx, concatAll(['auction_', personAddr, '_map']))
     auction = Deserialize(auction)
     now = GetTime() # TODO
+    Notify(now)
     
-    # read last index
+    # read last bid index
     idx = Get(ctx, concat('latest_bid_index_', personAddr))
-    idx = int(idx, 10)
     idx += 1
-    key = concat(concat(concat('bid_', personAddr), '_'), idx)
+    key = concatAll(['bid_', personAddr, '_', idx])
     
-    # create info json
-    info = {
-        "company_address": companyAddr, # TODO sender?
-        "price": price,
-        "date": now
-    }
-    Put(ctx, key, Serialize(info))
+    # create value
+    val = makeValue([companyAddr, price, now])
+    Put(ctx, key, val)
     
     # register latest bid index
     Put(ctx, concat('latest_bid_index_', personAddr), idx)
@@ -144,10 +127,9 @@ def ReadBids(personAddr):
     
     # get latest bid index
     idx = Get(ctx, concat('latest_bid_index_', personAddr));
-    idx = int(idx, 10)
     Notify(idx)
     for i in range(idx):
-        key = concat(concat(concat('bid_', personAddr), '_'), i)
+        key = concatAll(['bid_', personAddr, '_', i])
         Notify(key)
         v = Get(ctx, key)
         Notify(v)
@@ -155,3 +137,19 @@ def ReadBids(personAddr):
             bids.append(v)
     
     return bids
+
+def concatAll(values):
+    val = ''
+    for i in range(0, len(values)):
+        val = concat(val, values[i])
+        
+    return val
+    
+def makeValue(values):
+    val = ''
+    for i in range(0, len(values)):
+        if (i != 0):
+            val = concat(val, '$')
+        val = concat(val, values[i])
+        
+    return val
