@@ -2,12 +2,11 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { ReduxState } from "src/createStore";
 import { Dispatch } from "redux";
-import { Chatstate } from "../../modules/chat";
 import { Walletstate } from "../../modules/wallet";
 import ScoutTemp from "../../components/templates/scout";
 import { drawerList } from "./const";
 
-interface Props extends Chatstate, Walletstate {
+interface Props extends Walletstate {
   dispatch: Dispatch;
   history: any;
 }
@@ -38,4 +37,4 @@ class Scout extends React.Component<Props, States> {
   }
 }
 
-export default connect((state: ReduxState) => Object.assign({}, state.chat, state.wallet))(Scout);
+export default connect((state: ReduxState) => Object.assign({}, state.wallet))(Scout);
