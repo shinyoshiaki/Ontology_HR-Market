@@ -1,0 +1,40 @@
+{
+  "hash": "0x9dafc420e1d72bc943013f92f908af132c3b50a8",
+  "entrypoint": "Main",
+  "functions": [
+    { "name": "name", "parameters": [], "returntype": "String" },
+    { "name": "symbol", "parameters": [], "returntype": "String" },
+    { "name": "decimals", "parameters": [], "returntype": "Integer" },
+    {
+      "name": "Main",
+      "parameters": [{ "name": "operation", "type": "String" }, { "name": "args", "type": "Array" }],
+      "returntype": "ByteArray"
+    },
+    { "name": "deploy", "parameters": [], "returntype": "Boolean" },
+    { "name": "totalSupply", "parameters": [], "returntype": "Integer" },
+    {
+      "name": "transfer",
+      "parameters": [
+        { "name": "from", "type": "ByteArray" },
+        { "name": "to", "type": "ByteArray" },
+        { "name": "value", "type": "Integer" }
+      ],
+      "returntype": "Boolean"
+    },
+    { "name": "balanceOf", "parameters": [{ "name": "address", "type": "ByteArray" }], "returntype": "Integer" },
+    { "name": "inflation", "parameters": [{ "name": "count", "type": "Integer" }], "returntype": "Boolean" },
+    { "name": "recycle", "parameters": [{ "name": "count", "type": "Integer" }], "returntype": "Boolean" },
+    { "name": "transferMulti", "parameters": [{ "name": "args", "type": "Array" }], "returntype": "Boolean" },
+    {
+      "name": "tip",
+      "parameters": [
+        { "name": "me", "type": "ByteArray" },
+        { "name": "target", "type": "ByteArray" },
+        { "name": "amount", "type": "Integer" },
+        { "name": "data", "type": "String" }
+      ],
+      "returntype": "Boolean"
+    }
+  ],
+  "events": []
+}
