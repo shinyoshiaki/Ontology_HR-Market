@@ -15,8 +15,7 @@ export default class ListResultBitMol extends React.Component<IlistResultBitProp
   }
 
   private renderComment(human: HumanData, i: number) {
-    return <ViewBitResult {...this.props} resultHuman={human} />;
-    // <ViewComment id={comment.id} msg={comment.msg} key={i} />;
+    return <ViewBitResult {...this.props} resultHuman={human} key={i} />;
   }
 
   render() {

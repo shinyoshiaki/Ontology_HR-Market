@@ -29,6 +29,10 @@ class Result extends React.Component<Props, States> {
     this.setState({ human });
   };
 
+  onformResultApprove = () => {
+    console.log("onformResultApprove", this.state.human);
+  };
+
   render() {
     const { history } = this.props;
     return (
@@ -39,6 +43,7 @@ class Result extends React.Component<Props, States> {
           listResultBit={makeHumanDatasMock().datas}
           onViewBitResult={this.onViewBitResult}
           detailHuman={this.state.human}
+          onformResultApprove={this.onformResultApprove}
         />
       </div>
     );

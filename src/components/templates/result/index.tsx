@@ -1,11 +1,13 @@
 import * as React from "react";
 import HeaderOrg, { IheaderOrgProps } from "../../organisms/header";
 import ListResultBitMol, { IlistResultBitProps } from "../../molecules/listResultBit";
-import DetailWorkerMol, { IdetailWorkerProps } from "../../molecules/detailWorker";
+import ResultRightOrg, { IresultRightOrgProps } from "../../organisms/resultRight";
 
-export interface IResultTempProps extends IheaderOrgProps, IlistResultBitProps, IdetailWorkerProps {}
+export interface IResultTempProps extends IheaderOrgProps, IlistResultBitProps ,IresultRightOrgProps{}
 
-export default class ResultTemp extends React.Component<IResultTempProps, {}> {
+export interface IResultTempState {}
+
+export default class ResultTemp extends React.Component<IResultTempProps, IResultTempState> {
   constructor(props: IResultTempProps) {
     super(props);
   }
@@ -15,7 +17,7 @@ export default class ResultTemp extends React.Component<IResultTempProps, {}> {
       <div>
         <HeaderOrg {...this.props} />
         <ListResultBitMol {...this.props} />
-        <DetailWorkerMol {...this.props} />
+        <ResultRightOrg {...this.props} />
       </div>
     );
   }
