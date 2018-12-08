@@ -21,8 +21,10 @@ interface HumanDatas {
 }
 
 export interface Ibid {
-  human: HumanData[];
-  amount: number;
+  personAddr: string;
+  companyAddr: string;
+  price: number;
+  now: string;
 }
 
 export interface IlistBidProps {
@@ -66,11 +68,10 @@ export const makeIbidMock = (payload: { [key in keyof Ibid]?: Ibid[key] } = {}):
   return Object.assign(
     {},
     {
-      human: new Array(3)
-        .toString()
-        .split(",")
-        .map(() => Object.assign({}, makeHumanDataMock())),
-      amount: 1
+      personAddr: "",
+      companyAddr: "",
+      price: 1,
+      now: ""
     },
     payload
   );

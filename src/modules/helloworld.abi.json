@@ -41,11 +41,11 @@
     {
       "name": "RegisterBid",
       "parameters": [
-        { "name": "personAddr", "type": "" },
-        { "name": "companyAddr", "type": "" },
-        { "name": "price", "type": "" }
+        { "name": "personAddr", "type": "String" },
+        { "name": "companyAddr", "type": "String" },
+        { "name": "price", "type": "String" }
       ],
-      "returntype": ""
+      "returntype": "Boolean"
     },
     { "name": "ReadBids", "parameters": [{ "name": "personAddr", "type": "" }], "returntype": "" },
     { "name": "concatAll", "parameters": [{ "name": "values", "type": "" }], "returntype": "" },

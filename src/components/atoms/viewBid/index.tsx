@@ -12,7 +12,7 @@ export default class ViewBid extends React.Component<IviewBidProps, {}> {
   }
 
   renderView(bid: Ibid) {
-    return `${bid.amount}`;
+    return `${bid.price}`;
   }
 
   public render() {

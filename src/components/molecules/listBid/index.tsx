@@ -1,5 +1,5 @@
 import * as React from "react";
-import { HumanData } from "../../../interface";
+import { HumanData, Ibid } from "../../../interface";
 import ViewBid from "../../atoms/viewBid";
 
 export interface Ibid {
@@ -27,6 +27,9 @@ export default class ListBidMol extends React.Component<IlistBidProps, IlistBidS
   }
 
   render() {
-    return <div style={{ overflow: "scroll" }}>{this.props.listBid.map((v, i) => this.renderComment(v, i))}</div>;
+    const { listBid } = this.props;
+    return (
+      <div style={{ overflow: "scroll" }}>{listBid ? listBid.map((v, i) => this.renderComment(v, i)) : undefined}</div>
+    );
   }
 }

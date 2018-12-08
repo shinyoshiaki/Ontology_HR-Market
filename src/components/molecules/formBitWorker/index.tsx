@@ -29,6 +29,7 @@ export default class FormBitWorkerMol extends React.Component<IformBitWorkerProp
           }}
           value={this.state.amount}
           label="入札額"
+          type="number"
         />
         <Button
           onClick={() => {

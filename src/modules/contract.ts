@@ -2,7 +2,7 @@ import { AbiInfo, Parameter, ParameterType, RestClient } from "ontology-ts-sdk";
 import * as json from "./helloworld.abi.json";
 import { Dispatch, Action } from "redux";
 import { client } from "ontology-dapi";
-import { HumanData, Ibid, makeHumanDatasMock, makeIlistBidPropsMock } from "../interface";
+import { HumanData, Ibid, makeHumanDatasMock } from "../interface";
 import { onScCall } from "../domain/index";
 
 const rest = new RestClient("http://polaris1.ont.io:20334");
@@ -27,7 +27,7 @@ const initialState: ContractState = {
   listResultSearchHumans: [],
   listResultAuction: makeHumanDatasMock().datas,
   detailHuman: undefined,
-  listBid: makeIlistBidPropsMock().listBid
+  listBid: []
 };
 
 enum ActionNames {
@@ -39,7 +39,8 @@ export enum EcontractValue {
   listWorkers = "listWorkers",
   detailHuman = "detailHuman",
   userInfo = "userInfo",
-  listResultSearchHumans = "listResultSearchHumans"
+  listResultSearchHumans = "listResultSearchHumans",
+  listBid = "listBid"
 }
 
 interface SetValueAction extends Action {
@@ -140,6 +141,60 @@ export async function registerAuction(address: string) {
   if (result) {
     console.log("success", result);
   }
+}
+
+export async function registerBid(address: string, companyAddress: string, price: number) {
+  console.log("registerAuction");
+  const abiFunction = abiInfo.getFunction("RegisterBid");
+  const human = await getPerson(address);
+  if (!human) return;
+  abiFunction.setParamsValue(
+    new Parameter(abiFunction.parameters[0].getName(), ParameterType.String, address),
+    new Parameter(abiFunction.parameters[1].getName(), ParameterType.String, companyAddress),
+    new Parameter(abiFunction.parameters[2].getName(), ParameterType.String, price.toString())
+  );
+  const result = await onScCall({
+    scriptHash: codeHash,
+    operation: abiFunction.name,
+    args: abiFunction.parameters,
+    gasLimit: 20000,
+    gasPrice: 500
+  }).catch(console.log);
+  if (result) {
+    console.log("success", result);
+  }
+}
+
+export async function listenBid(address: string, dispatch: Dispatch<SetValueAction>) {
+  setInterval(async () => {
+    const bids: Ibid[] = [];
+    const result = await rest
+      .getStorage(codeHash, Buffer.from("latest_bid_index_" + address, "ascii").toString("hex"))
+      .catch(console.log);
+    console.log({ result });
+    if (!result.Result) return;
+    const idx = parseInt(result.Result, 10);
+    for (let i = 0; i < idx + 1; i++) {
+      const raw = await rest
+        .getStorage(codeHash, Buffer.from("bid_$" + address + "$_" + i, "ascii").toString("hex"))
+        .catch(console.log);
+      console.log({ raw });
+      if (raw.Result) {
+        const arr = Buffer.from(raw.Result, "hex")
+          .toString("ascii")
+          .split("$");
+        console.log({ arr });
+        const bid: Ibid = {
+          personAddr: address,
+          companyAddr: arr[0],
+          price: parseInt(arr[1], 10),
+          now: Date.now().toString()
+        };
+        bids.push(bid);
+      }
+    }
+    setContractValue(EcontractValue.listBid, bids, dispatch);
+  }, 1000);
 }
 
 export async function addWorker(human: HumanData) {
