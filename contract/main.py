@@ -9,7 +9,7 @@ ctx = GetContext()
 def Main(operation, args):
 
     if operation == 'RegisterPerson':
-        return RegisterPerson(args[0], args[1])
+        return RegisterPerson(args[0], args[1], args[2])
     
     if operation == 'ReadPerson':
         return ReadPerson(args[0])
@@ -25,12 +25,31 @@ def Main(operation, args):
         
     if operation == 'RegisterBid':
         return RegisterBid(args[0], args[1], args[2])
-        if operation == 'ReadBids':
+        
+    if operation == 'ReadBids':
         return ReadBids(args[0])
         
     return False
+
+def concatAll(values):
+    info = ''
+    for i in range(0, len(values)):
+        if (i != 0):
+            info = concat(info, '$')
+        info = concat(info, values[i])
+        
+    return info
+
+
+def RegisterPerson(personAddr, name, company):
+    key = concat("person_", personAddr)
+    info = concatAll([name, company])
+
+    Put(ctx, key, info)
+
+    return True
     
-def RegisterPerson(personAddr, company):
+def RegisterPerson_(personAddr, name, company):
     Notify(personAddr)
     key = concat("person_", personAddr)
     info = {
