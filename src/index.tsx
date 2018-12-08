@@ -8,6 +8,7 @@ import scout from "./containers/pages/scout";
 import manage from "./containers/pages/manage";
 import market from "./containers/pages/market";
 import result from "./containers/pages/result";
+import { setMyAddress } from "./modules/contract";
 
 const data = createStore();
 Ontology.client.registerClient({});
@@ -19,6 +20,10 @@ Ontology.client.registerClient({});
     alert("No dAPI provider istalled.");
   }
 })();
+
+console.log({ data });
+
+setMyAddress(data.store.dispatch);
 
 ReactDOM.render(
   <Provider store={data.store}>

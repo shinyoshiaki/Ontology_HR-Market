@@ -3,11 +3,12 @@ import * as React from "react";
 import { storiesOf } from "@storybook/react";
 
 import Component, { ImanageLeftOrgProps } from ".";
-import { action } from "@storybook/addon-actions";
+import { listWorkerStory } from "../../molecules/listWorkers/index.stories";
+import { formAddWorkerStory } from "../../molecules/formAddWorker/index.stories";
+import { formSetAddressStory } from "../../molecules/formSetAddress/index.stories";
 
 export const manageLeftOrgStory: ImanageLeftOrgProps = {
-  onformAddWorker: action("action"),
-  listWorkers: []
+  ...Object.assign({}, listWorkerStory, formAddWorkerStory, formSetAddressStory)
 };
 
-storiesOf("organisms", module).add("manageLeft", () => <Component {...Object.assign({}, manageLeftOrgStory)} />);
+storiesOf("organisms", module).add("manageLeft", () => <Component {...manageLeftOrgStory} />);

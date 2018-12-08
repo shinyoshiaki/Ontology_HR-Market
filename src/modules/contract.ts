@@ -6,6 +6,9 @@ import {
 } from "ontology-ts-sdk";
 import * as json from "./helloworld.abi.json";
 import { Dispatch, Action } from "redux";
+import { client } from "ontology-dapi";
+import { HumanData } from "../interface/index.js";
+
 // import { onScCall } from "./wallet";
 
 // const rest = new RestClient("http://polaris1.ont.io:20334");
@@ -22,30 +25,34 @@ async function test() {
   //     .getStorage(codeHash, Buffer.from("auction_aaa", "ascii").toString("hex"))
   //     .catch(console.log);
   //   console.log({ result });
-
-//   await onScCall({
-//     scriptHash: codeHash,
-//     operation: abiFunction.name,
-//     args: abiFunction.parameters,
-//     gasLimit: 20000,
-//     gasPrice: 500
-//   }).catch(console.log);
-
-//   await onScCall({
-//     scriptHash: codeHash,
-//     operation: abiFunction.name,
-//     args: abiFunction.parameters
-//   }).catch(console.log);
+  //   await onScCall({
+  //     scriptHash: codeHash,
+  //     operation: abiFunction.name,
+  //     args: abiFunction.parameters,
+  //     gasLimit: 20000,
+  //     gasPrice: 500
+  //   }).catch(console.log);
+  //   await onScCall({
+  //     scriptHash: codeHash,
+  //     operation: abiFunction.name,
+  //     args: abiFunction.parameters
+  //   }).catch(console.log);
 }
 
 test();
 
 export interface ContractState {
-  listenSuperChat: boolean;
+  myAddress?: string;
+  listWorkers: HumanData[];
+  listResultSearchHumans: HumanData[];
+  listResultAuction: HumanData[];
 }
 
 const initialState: ContractState = {
-  listenSuperChat: false
+  myAddress: undefined,
+  listWorkers: [],
+  listResultSearchHumans: [],
+  listResultAuction: []
 };
 
 enum ActionNames {
@@ -53,13 +60,19 @@ enum ActionNames {
 }
 
 export enum EcontractValue {
-  listenSuperChat = "listenSuperChat"
+  myAddress = "myAddress"
 }
 
 interface SetValueAction extends Action {
   type: ActionNames.SET_VALUE;
   key: string;
   value: any;
+}
+
+export async function setMyAddress(dispatch: Dispatch<SetValueAction>) {
+  const address = await client.api.asset.getAccount();
+  if (address) setContractValue(EcontractValue.myAddress, address, dispatch);
+  return address;
 }
 
 export function setContractValue(key: EcontractValue, value: any, dispatch: Dispatch<SetValueAction>) {

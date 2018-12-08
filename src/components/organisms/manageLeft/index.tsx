@@ -2,8 +2,9 @@ import * as React from "react";
 import ListWorkerMol, { IlistWorkerProps } from "../../molecules/listWorkers";
 import { Button, Modal } from "@material-ui/core";
 import FormAddWorkerMol, { IformAddWorkerProps } from "../../molecules/formAddWorker";
+import FormSetAddress, { IformSetAddressProps } from "../../molecules/formSetAddress";
 
-export interface ImanageLeftOrgProps extends IlistWorkerProps, IformAddWorkerProps {
+export interface ImanageLeftOrgProps extends IlistWorkerProps, IformAddWorkerProps, IformSetAddressProps {
   style?: React.CSSProperties;
 }
 
@@ -30,6 +31,7 @@ export default class ManageLeftOrg extends React.Component<ImanageLeftOrgProps, 
       <div style={this.props.style}>
         <div style={{ display: "flex", minHeight: "90vh", flexDirection: "column" }}>
           <div style={{ flex: 1 }}>
+            <FormSetAddress {...this.props} />
             <ListWorkerMol {...this.props} />
           </div>
           <Button onClick={this.handleModalOpen} style={{ marginTop: "auto" }}>

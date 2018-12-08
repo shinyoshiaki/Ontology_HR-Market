@@ -5,6 +5,8 @@ import { storiesOf } from "@storybook/react";
 import Component from ".";
 import { action } from "@storybook/addon-actions";
 
-storiesOf("molecules", module).add("formSetAddress", () => (
-  <Component onformSetAddress={action("formSetAddress")} />
-));
+export const formSetAddressStory = {
+  onformSetAddress: action("formSetAddress")
+};
+
+storiesOf("molecules", module).add("formSetAddress", () => <Component {...formSetAddressStory} />);

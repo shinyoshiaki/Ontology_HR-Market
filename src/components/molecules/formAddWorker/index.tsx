@@ -16,7 +16,16 @@ export default class FormAddWorkerMol extends React.Component<IformAddWorkerProp
 
   render() {
     return (
-      <div>
+      <div
+        style={{
+          border: "1px solid",
+          borderRadius: 4,
+          borderWidth: 0.5,
+          borderColor: "#d6d7da",
+          margin: 3,
+          padding: 10
+        }}
+      >
         <TextField
           onChange={e => {
             this.setState({ name: e.target.value });
@@ -24,6 +33,7 @@ export default class FormAddWorkerMol extends React.Component<IformAddWorkerProp
           value={this.state.name}
           label="name"
         />
+        <br />
         <TextField
           onChange={e => {
             this.setState({ age: parseInt(e.target.value, 10) });
@@ -31,6 +41,7 @@ export default class FormAddWorkerMol extends React.Component<IformAddWorkerProp
           value={this.state.age}
           label="age"
         />
+        <br />
         <TextField
           onChange={e => {
             this.setState({ gender: parseInt(e.target.value, 10) });
@@ -38,6 +49,7 @@ export default class FormAddWorkerMol extends React.Component<IformAddWorkerProp
           value={this.state.gender}
           label="gender"
         />
+        <br />
         <TextField
           onChange={e => {
             this.setState({ company: e.target.value });
@@ -45,6 +57,7 @@ export default class FormAddWorkerMol extends React.Component<IformAddWorkerProp
           value={this.state.company}
           label="company"
         />
+        <br />
         <TextField
           onChange={e => {
             this.setState({ mail: e.target.value });
@@ -52,6 +65,7 @@ export default class FormAddWorkerMol extends React.Component<IformAddWorkerProp
           value={this.state.mail}
           label="mail"
         />
+        <br />
         <TextField
           onChange={e => {
             this.setState({ memo: e.target.value });
@@ -59,6 +73,7 @@ export default class FormAddWorkerMol extends React.Component<IformAddWorkerProp
           value={this.state.memo}
           label="memo"
         />
+        <br />
         <Button
           onClick={() => {
             this.props.onformAddWorker(this.state);

@@ -2,13 +2,11 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { ReduxState } from "src/createStore";
 import { Dispatch } from "redux";
-import { Walletstate } from "../../modules/wallet";
 import ResultTemp from "../../components/templates/result";
-import { makeHumanDatasMock, HumanData } from "../../interface";
-// import MarketTemp from "../../components/templates/market";
-// import { drawerList } from "./const";
+import { HumanData } from "../../interface";
+import { ContractState } from "../../modules/contract";
 
-interface Props extends Walletstate {
+interface Props extends ContractState {
   dispatch: Dispatch;
   history: any;
 }
@@ -34,13 +32,13 @@ class Result extends React.Component<Props, States> {
   };
 
   render() {
-    const { history } = this.props;
+    const { history, myAddress, listResultAuction } = this.props;
     return (
       <div>
         <ResultTemp
           history={history}
-          myAddress="test"
-          listResultBit={makeHumanDatasMock().datas}
+          myAddress={myAddress ? myAddress : "error"}
+          listResultAuction={listResultAuction}
           onViewBitResult={this.onViewBitResult}
           detailHuman={this.state.human}
           onformResultApprove={this.onformResultApprove}
@@ -50,4 +48,4 @@ class Result extends React.Component<Props, States> {
   }
 }
 
-export default connect((state: ReduxState) => Object.assign({}, state.wallet))(Result);
+export default connect((state: ReduxState) => Object.assign({}, state.contract))(Result);

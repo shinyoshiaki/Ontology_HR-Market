@@ -2,11 +2,10 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { ReduxState } from "src/createStore";
 import { Dispatch } from "redux";
-import { Walletstate } from "../../modules/wallet";
 import ScoutTemp from "../../components/templates/scout";
-import { drawerList } from "./const";
+import { ContractState } from "../../modules/contract";
 
-interface Props extends Walletstate {
+interface Props extends ContractState {
   dispatch: Dispatch;
   history: any;
 }
@@ -22,19 +21,18 @@ class Scout extends React.Component<Props, States> {
   onformSearchHuman = () => {};
 
   render() {
-    const { history } = this.props;
+    const { history, myAddress, listResultSearchHumans } = this.props;
     return (
       <div>
         <ScoutTemp
-          myAddress="test"
-          drawerMolList={drawerList}
+          myAddress={myAddress ? myAddress : "error"}
           history={history}
           onformSearchHuman={this.onformSearchHuman}
-          listResultSearchHumans={[]}
+          listResultSearchHumans={listResultSearchHumans}
         />
       </div>
     );
   }
 }
 
-export default connect((state: ReduxState) => Object.assign({}, state.wallet))(Scout);
+export default connect((state: ReduxState) => Object.assign({}, state.contract))(Scout);

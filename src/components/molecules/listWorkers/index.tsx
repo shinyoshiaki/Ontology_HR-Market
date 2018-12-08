@@ -1,7 +1,8 @@
 import * as React from "react";
 import { HumanData } from "../../../interface";
+import ViewWorker, { IviewWorkerProps } from "../../atoms/viewWorker";
 
-export interface IlistWorkerProps {
+export interface IlistWorkerProps extends IviewWorkerProps {
   listWorkers: HumanData[];
   maxheight?: string;
   style?: React.CSSProperties;
@@ -19,7 +20,7 @@ export default class ListWorkerMol extends React.Component<IlistWorkerProps, Ili
   }
 
   private renderComment(human: HumanData, i: number) {
-    return JSON.stringify(human);
+    return <ViewWorker {...this.props} resultHuman={human} key={i} style={{ width: "auto" }} />;
     // <ViewComment id={comment.id} msg={comment.msg} key={i} />;
   }
 

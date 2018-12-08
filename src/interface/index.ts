@@ -7,12 +7,12 @@ export interface JobData {
 
 export interface HumanData {
   name: string;
-  age: number;
-  gender: number;
+  age?: number;
+  gender?: number;
   company: string;
-  history: JobData[];
-  mail: string;
-  memo: string;
+  history?: JobData[];
+  mail?: string;
+  memo?: string;
 }
 
 interface HumanDatas {

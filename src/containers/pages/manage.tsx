@@ -2,11 +2,10 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { ReduxState } from "src/createStore";
 import { Dispatch } from "redux";
-import { Walletstate } from "../../modules/wallet";
 import ManageTemp from "../../components/templates/manage";
-import { makeHumanDatasMock } from "../../interface";
+import { ContractState } from "../../modules/contract";
 
-interface Props extends Walletstate {
+interface Props extends ContractState {
   dispatch: Dispatch;
   history: any;
 }
@@ -20,19 +19,26 @@ class Manage extends React.Component<Props, States> {
   }
 
   onformAddWorker = () => {};
+
+  onformSetAddress = () => {};
+
+  onViewWorker = () => {};
+
   render() {
-    const { history } = this.props;
+    const { history, listWorkers, myAddress } = this.props;
     return (
       <div>
         <ManageTemp
-          myAddress=""
-          listWorkers={makeHumanDatasMock().datas}
+          myAddress={myAddress ? myAddress : "error"}
+          listWorkers={listWorkers}
           onformAddWorker={this.onformAddWorker}
           history={history}
+          onformSetAddress={this.onformSetAddress}
+          onViewWorker={this.onViewWorker}
         />
       </div>
     );
   }
 }
 
-export default connect((state: ReduxState) => Object.assign({}, state.wallet))(Manage);
+export default connect((state: ReduxState) => Object.assign({}, state.contract))(Manage);
