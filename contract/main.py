@@ -14,7 +14,10 @@ def Main(operation, args):
     
     if operation == 'RegisterCompany':
         return RegisterCompany(args[0], args[1])
-        
+    
+    if operation == 'RegisterCompanyPerson':
+        return RegisterCompanyPerson(args[0], args[1])
+    
     if operation == 'ReadCompany':
         return ReadCompany(args[0])
     
@@ -49,9 +52,31 @@ def ReadPerson(personAddr):
     return valList
 
 def RegisterCompany(companyAddr, name):
-    key = concat("company_", companyAddr)
+    key = concat('company_', companyAddr)
     Put(ctx, key, name)
     
+    return True
+    
+def RegisterCompanyPerson(companyAddr, personAddr):
+    key = concatAll(['company_', companyAddr, '_persons'])
+    Notify(key)
+    keyM = concatAll(['company_', companyAddr, '_persons_map'])
+    Notify(keyM)
+    curVal = Get(ctx, keyM)
+    curValList = []
+    if curVal is not None:
+        curValList = Deserialize(curVal)
+    
+    for i in range(0, len(curValList)):
+        if personAddr == curValList[i]:
+            Notify('duplicated')
+            return True
+    
+    curValList.append(personAddr)
+    val = makeValue(curValList)
+    
+    Put(ctx, key, val)
+    Put(ctx, keyM, Serialize(curValList))
     return True
     
 def ReadCompany(companyAddr):
@@ -116,8 +141,6 @@ def ReadBids(personAddr):
 def concatAll(values):
     val = ''
     for i in range(0, len(values)):
-        if (i != 0):
-            val = concat(val, '$')
         val = concat(val, values[i])
         
     return val
