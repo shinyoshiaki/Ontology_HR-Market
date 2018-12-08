@@ -1,6 +1,5 @@
 export const drawerList = [
-  { address: "", label: "buy" },
-  { address: "market", label: "market" },
-  { address: "sell", label: "sell" },
+  { address: "", label: "manage" },
+  { address: "scout", label: "scout" },
   { address: "result", label: "result" }
 ];

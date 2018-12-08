@@ -4,7 +4,7 @@ import { ReduxState } from "src/createStore";
 import { Dispatch } from "redux";
 import { Chatstate } from "../../modules/chat";
 import { Walletstate } from "../../modules/wallet";
-import MarketTemp from "../../components/templates/market";
+import ScoutTemp from "../../components/templates/scout";
 import { drawerList } from "./const";
 
 interface Props extends Chatstate, Walletstate {
@@ -14,21 +14,28 @@ interface Props extends Chatstate, Walletstate {
 
 interface States {}
 
-class Sell extends React.Component<Props, States> {
+class Scout extends React.Component<Props, States> {
   constructor(props: any) {
     super(props);
     this.state = {};
   }
 
+  onformSearchHuman = () => {};
+
   render() {
     const { history } = this.props;
     return (
       <div>
-        <MarketTemp myAddress="test" drawerMolList={drawerList} history={history} />
-        something
+        <ScoutTemp
+          myAddress="test"
+          drawerMolList={drawerList}
+          history={history}
+          onformSearchHuman={this.onformSearchHuman}
+          listResultSearchHumanComments={[]}
+        />
       </div>
     );
   }
 }
 
-export default connect((state: ReduxState) => Object.assign({}, state.chat, state.wallet))(Sell);
+export default connect((state: ReduxState) => Object.assign({}, state.chat, state.wallet))(Scout);
