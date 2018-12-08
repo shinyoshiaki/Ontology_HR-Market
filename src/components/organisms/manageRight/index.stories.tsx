@@ -5,8 +5,8 @@ import { storiesOf } from "@storybook/react";
 import Component from ".";
 import { detailWorkerStory } from "../../molecules/detailWorker/index.stories";
 
-export const manageLeftOrgStory = {
+export const manageRightOrgStory = {
   ...detailWorkerStory
 };
 
-storiesOf("organisms", module).add("manageRight", () => <Component {...manageLeftOrgStory} />);
+storiesOf("organisms", module).add("manageRight", () => <Component {...manageRightOrgStory} />);

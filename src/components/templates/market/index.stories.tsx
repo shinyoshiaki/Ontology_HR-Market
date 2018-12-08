@@ -9,7 +9,7 @@ import { action } from "@storybook/addon-actions";
 
 export const marketStory: IMarketTempProps = {
   myAddress: "test",
-  human: makeHumanDataMock(),
+  detailHuman: makeHumanDataMock(),
   listBid: makeIlistBidPropsMock().listBid,
   onformBitWorker: () => {
     action("action");

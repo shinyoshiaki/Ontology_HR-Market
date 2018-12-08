@@ -2,7 +2,7 @@ import * as React from "react";
 import { HumanData } from "../../../interface";
 
 export interface IdetailWorkerProps {
-  human: HumanData;
+  detailHuman?: HumanData;
 }
 
 export interface IdetailWorkerState {}
@@ -13,7 +13,7 @@ export default class DetailWorkerMol extends React.Component<IdetailWorkerProps,
   }
 
   render() {
-    const { human } = this.props;
-    return <div>{JSON.stringify(human)}</div>;
+    const { detailHuman } = this.props;
+    return <div>{JSON.stringify(detailHuman)}</div>;
   }
 }

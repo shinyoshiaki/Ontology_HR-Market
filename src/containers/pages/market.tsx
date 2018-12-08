@@ -30,7 +30,7 @@ class Market extends React.Component<Props, States> {
           myAddress="test"
           drawerMolList={drawerList}
           history={history}
-          human={makeHumanDataMock()}
+          detailHuman={makeHumanDataMock()}
           listBid={[]}
           onformBitWorker={this.onformBitWorker}
         />

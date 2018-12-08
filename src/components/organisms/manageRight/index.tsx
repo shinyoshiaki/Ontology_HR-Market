@@ -1,10 +1,7 @@
 import * as React from "react";
-import DetailWorkerMol from "../../molecules/detailWorker";
-import { HumanData } from "../../../interface";
+import DetailWorkerMol, { IdetailWorkerProps } from "../../molecules/detailWorker";
 
-export interface ImanageRightOrgProps {
-  human?: HumanData;
-}
+export interface ImanageRightOrgProps extends IdetailWorkerProps {}
 
 export default class ManageRightOrg extends React.Component<ImanageRightOrgProps, {}> {
   constructor(props: ImanageRightOrgProps) {
@@ -12,7 +9,10 @@ export default class ManageRightOrg extends React.Component<ImanageRightOrgProps
   }
 
   public render() {
-    const { human } = this.props;
-    return <div>{human ? <DetailWorkerMol human={human} /> : undefined}</div>;
+    return (
+      <div>
+        <DetailWorkerMol {...this.props} />{" "}
+      </div>
+    );
   }
 }
