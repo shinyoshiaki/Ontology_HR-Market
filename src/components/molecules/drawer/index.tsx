@@ -10,8 +10,8 @@ export interface IdrawerMolList {
 export interface IdrawerMolProps {
   drawerOpen?: boolean;
   drawerMolClose?: () => void;
-  drawerMolList: IdrawerMolList[];
-  history: any;
+  drawerMolList?: IdrawerMolList[];
+  history?: any;
 }
 
 export interface IdrawerMolState {}
@@ -38,6 +38,7 @@ export default class DrawerMol extends React.Component<IdrawerMolProps, IdrawerM
   }
 
   render() {
+    const { drawerMolList } = this.props;
     return (
       <Drawer variant="persistent" anchor="left" open={this.props.drawerOpen}>
         <div>
@@ -49,7 +50,7 @@ export default class DrawerMol extends React.Component<IdrawerMolProps, IdrawerM
             <ArrowBack />
           </IconButton>
         </div>
-        {this.props.drawerMolList.map(v => this.renderLink(v.address, v.label))}
+        {drawerMolList ? drawerMolList.map(v => this.renderLink(v.address, v.label)) : undefined}
       </Drawer>
     );
   }

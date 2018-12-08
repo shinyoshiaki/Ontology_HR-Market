@@ -6,6 +6,6 @@ import Component from ".";
 import { makeIdrawerMolPropsMock } from "../../molecules/drawer/index.stories";
 import { searchHumanOrgStory } from "../../organisms/searchHuman/index.stories";
 
-storiesOf("templates", module).add("buy", () => (
+storiesOf("templates", module).add("scout", () => (
   <Component {...searchHumanOrgStory} myAddress="test" {...makeIdrawerMolPropsMock()} />
 ));

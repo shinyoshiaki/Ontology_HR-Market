@@ -12,6 +12,12 @@ interface IheaderOrgState {
   drawerOpen: boolean;
 }
 
+const drawerList = [
+  { address: "", label: "manage" },
+  { address: "scout", label: "scout" },
+  { address: "result", label: "result" }
+];
+
 export default class HeaderOrg extends React.Component<IheaderOrgProps, IheaderOrgState> {
   url?: string;
   constructor(props: IheaderOrgProps) {
@@ -41,7 +47,12 @@ export default class HeaderOrg extends React.Component<IheaderOrgProps, IheaderO
             </Typography>
           </Toolbar>
         </AppBar>
-        <DrawerMol {...this.props} drawerMolClose={this.handleSwitchDrawer} drawerOpen={this.state.drawerOpen} />
+        <DrawerMol
+          {...this.props}
+          drawerMolList={drawerList}
+          drawerMolClose={this.handleSwitchDrawer}
+          drawerOpen={this.state.drawerOpen}
+        />
       </div>
     );
   }

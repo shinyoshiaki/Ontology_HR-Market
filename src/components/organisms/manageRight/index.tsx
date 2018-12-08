@@ -2,13 +2,12 @@ import * as React from "react";
 import DetailWorkerMol from "../../molecules/detailWorker";
 import { HumanData } from "../../../interface";
 
-export interface ImanageLeftOrgProps {
+export interface ImanageRightOrgProps {
   human?: HumanData;
-  style?: object;
 }
 
-export default class ManageLeftOrg extends React.Component<ImanageLeftOrgProps, {}> {
-  constructor(props: ImanageLeftOrgProps) {
+export default class ManageRightOrg extends React.Component<ImanageRightOrgProps, {}> {
+  constructor(props: ImanageRightOrgProps) {
     super(props);
   }
 

@@ -3,6 +3,9 @@ import * as React from "react";
 import { storiesOf } from "@storybook/react";
 
 import Component from ".";
-import { makeIdrawerMolPropsMock } from "../../molecules/drawer/index.stories";
+import { makeHumanDataMock } from "../../../interface";
+import { manageLeftOrgStory } from '../../organisms/manageLeft/index.stories';
 
-storiesOf("templates", module).add("buy", () => <Component myAddress="test" {...makeIdrawerMolPropsMock()} />);
+storiesOf("templates", module).add("manage", () => (
+  <Component {...manageLeftOrgStory} myAddress="test" listWorkers={[]} human={makeHumanDataMock()} />
+));
