@@ -1,9 +1,8 @@
 import * as React from "react";
-import ViewComment from "../../atoms/viewComment";
-import {HumanData} from '../../../interface'
+import { HumanData } from "../../../interface";
 
 export interface IlistResultSearchHumanProps {
-  listResultSearchHumanComments: HumanData[];
+  listResultSearchHumans: HumanData[];
   maxheight?: string;
   style?: object;
 }
@@ -22,8 +21,9 @@ export default class ListResultSearchHuman extends React.Component<
     };
   }
 
-  private renderComment(comment: HumanData, i: number) {
-    return <ViewComment id={comment.id} msg={comment.msg} key={i} />;
+  private renderComment(human: HumanData, i: number) {
+    return JSON.stringify(human);
+    // <ViewComment id={comment.id} msg={comment.msg} key={i} />;
   }
 
   render() {
@@ -42,7 +42,7 @@ export default class ListResultSearchHuman extends React.Component<
           ...this.props.style
         }}
       >
-        {this.props.listResultSearchHumanComments.map((v, i) => this.renderComment(v, i))}
+        {this.props.listResultSearchHumans.map((v, i) => this.renderComment(v, i))}
       </div>
     );
   }

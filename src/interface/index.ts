@@ -1,6 +1,16 @@
+export interface JobData {
+  company: string;
+  type: string;
+  start: string;
+  end: string;
+}
+
 export interface HumanData {
-  id: string;
-  msg: string;
-  money: number;
-  timestamp: any;
+  name: string;
+  age: number;
+  gender: number;
+  company: string;
+  history: JobData[];
+  mail: string;
+  memo: string;
 }

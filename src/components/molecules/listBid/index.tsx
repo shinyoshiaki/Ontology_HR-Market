@@ -1,5 +1,4 @@
 import * as React from "react";
-import ViewComment from "../../atoms/viewComment";
 import {HumanData} from '../../../interface'
 
 export interface IlistBidProps {
@@ -22,8 +21,9 @@ export default class ListBidMol extends React.Component<
     };
   }
 
-  private renderComment(comment: HumanData, i: number) {
-    return <ViewComment id={comment.id} msg={comment.msg} key={i} />;
+  private renderComment(human: HumanData, i: number) {
+    return JSON.stringify(human);
+    //  <ViewComment id={comment.id} msg={comment.msg} key={i} />;
   }
 
   render() {

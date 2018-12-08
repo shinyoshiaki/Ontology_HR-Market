@@ -31,7 +31,7 @@ class Scout extends React.Component<Props, States> {
           drawerMolList={drawerList}
           history={history}
           onformSearchHuman={this.onformSearchHuman}
-          listResultSearchHumanComments={[]}
+          listResultSearchHumans={[]}
         />
       </div>
     );

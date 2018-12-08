@@ -2,41 +2,10 @@ import * as React from "react";
 
 import { storiesOf } from "@storybook/react";
 
-import Component, { IlistResultSearchHumanProps } from ".";
-import { HumanData } from "../../../interface";
-
-export const makeHumanDataMock = (payload: { [key in keyof HumanData]?: HumanData[key] } = {}): HumanData => {
-  return Object.assign(
-    {},
-    {
-      id: "this is mock string",
-      msg: "this is mock string",
-      money: 1,
-      timestamp: undefined
-    },
-    payload
-  );
-};
-
-export const makeIlistResultSearchHumanPropsMock = (
-  payload: { [key in keyof IlistResultSearchHumanProps]?: IlistResultSearchHumanProps[key] } = {}
-): IlistResultSearchHumanProps => {
-  return Object.assign(
-    {},
-    {
-      listResultSearchHumanComments: new Array(3)
-        .toString()
-        .split(",")
-        .map(() => Object.assign({}, makeHumanDataMock())),
-      maxheight: "this is mock string",
-      style: undefined
-    },
-    payload
-  );
-};
+import Component from ".";
 
 export const ListResultSearchHumanStory = {
-  listResultSearchHumanComments: makeIlistResultSearchHumanPropsMock().listResultSearchHumanComments
+  listResultSearchHumans: []
 };
 
 storiesOf("molecules", module).add("listResultSearchHuman", () => <Component {...ListResultSearchHumanStory} />);

@@ -1,6 +1,5 @@
 import * as React from "react";
-import ViewComment from "../../atoms/viewComment";
-import {HumanData} from '../../../interface'
+import { HumanData } from "../../../interface";
 
 export interface IlistWorkerProps {
   listWorkers: HumanData[];
@@ -19,8 +18,9 @@ export default class ListWorkerMol extends React.Component<IlistWorkerProps, Ili
     };
   }
 
-  private renderComment(comment: HumanData, i: number) {
-    return <ViewComment id={comment.id} msg={comment.msg} key={i} />;
+  private renderComment(human: HumanData, i: number) {
+    return JSON.stringify(human);
+    // <ViewComment id={comment.id} msg={comment.msg} key={i} />;
   }
 
   render() {

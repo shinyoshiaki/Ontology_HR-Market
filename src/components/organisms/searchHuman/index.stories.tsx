@@ -5,7 +5,6 @@ import { storiesOf } from "@storybook/react";
 import Component from ".";
 import { action } from "@storybook/addon-actions";
 import { CommentData, IlistCommentProps } from "../../molecules/listComment";
-import { ListResultSearchHumanStory } from '../../molecules/listResultSearchHuman/index.stories';
 
 const makeCommentMock = (payload: { [key in keyof CommentData]?: CommentData[key] } = {}): CommentData => {
   return Object.assign(
@@ -37,9 +36,7 @@ export const makeIlistCommentPropsMock = (
 
 export const searchHumanOrgStory = {
   onformSearchHuman: action("action"),
-  listResultSearchHumanComments: ListResultSearchHumanStory.listResultSearchHumanComments
+  listResultSearchHumans: []
 };
 
-storiesOf("organisms", module).add("searchHUman", () => (
-  <Component {...searchHumanOrgStory} />
-));
+storiesOf("organisms", module).add("searchHUman", () => <Component {...searchHumanOrgStory} />);
