@@ -20,11 +20,19 @@ class Buy extends React.Component<Props, States> {
     this.state = {};
   }
 
+  onformSearchHuman = () => {};
+
   render() {
     const { history } = this.props;
     return (
       <div>
-        <BuyTemp myAddress="test" drawerMolList={drawerList} history={history} />
+        <BuyTemp
+          myAddress="test"
+          drawerMolList={drawerList}
+          history={history}
+          onformSearchHuman={this.onformSearchHuman}
+          listResultSearchHumanComments={[]}
+        />
         something
       </div>
     );

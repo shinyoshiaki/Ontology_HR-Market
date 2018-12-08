@@ -1,0 +1,45 @@
+import * as React from "react";
+
+import { storiesOf } from "@storybook/react";
+
+import Component from ".";
+import { action } from "@storybook/addon-actions";
+import { CommentData, IlistCommentProps } from "../../molecules/listComment";
+import { ListResultSearchHumanStory } from '../../molecules/listResultSearchHuman/index.stories';
+
+const makeCommentMock = (payload: { [key in keyof CommentData]?: CommentData[key] } = {}): CommentData => {
+  return Object.assign(
+    {},
+    {
+      id: "this is mock string",
+      msg: "this is mock string",
+      money: 1,
+      timestamp: undefined
+    },
+    payload
+  );
+};
+
+export const makeIlistCommentPropsMock = (
+  payload: { [key in keyof IlistCommentProps]?: IlistCommentProps[key] } = {}
+): IlistCommentProps => {
+  return Object.assign(
+    {},
+    {
+      listCommentComments: new Array(20)
+        .toString()
+        .split(",")
+        .map(() => Object.assign({}, makeCommentMock()))
+    },
+    payload
+  );
+};
+
+export const searchHumanOrgStory = {
+  onformSearchHuman: action("action"),
+  listResultSearchHumanComments: ListResultSearchHumanStory.listResultSearchHumanComments
+};
+
+storiesOf("organisms", module).add("searchHUman", () => (
+  <Component {...searchHumanOrgStory} />
+));
