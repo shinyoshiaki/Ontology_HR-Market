@@ -1,20 +1,18 @@
 import * as React from "react";
-import { Button, withStyles } from "@material-ui/core";
+import { Button, FormControl, TextField } from "@material-ui/core";
+import { HumanData } from "../../../interface";
 
-const styles = (theme: any) => ({
-  submit: {
-    marginTop: theme.spacing.unit * 3
-  }
-});
-
-export interface RegisterProps {
-  register: (v?: any) => void;
+export interface FormRegisterProps {
+  addressRegister: string;
+  register: (human: HumanData) => void;
 }
 
-export class RegisterMol extends React.Component<RegisterProps, {}> {
-  nickname: string;
-  constructor(props: RegisterProps) {
+export default class FormRegisterMol extends React.Component<FormRegisterProps, {}> {
+  name: string = "";
+  company: string = "";
+  constructor(props: FormRegisterProps) {
     super(props);
+    console.log({ props });
   }
 
   public render() {
@@ -24,34 +22,49 @@ export class RegisterMol extends React.Component<RegisterProps, {}> {
       <div>
         <div
           style={{
-            textAlign: "center",
             border: "1px solid",
             borderRadius: 4,
             borderWidth: 0.5,
             borderColor: "#d6d7da"
           }}
         >
-          {/* <TextField
-            label="nick name"
-            onChange={e => {
-              this.nickname = e.target.value;
-            }}
-          />
+          <FormControl margin="normal" required fullWidth>
+            <div style={{ textAlign: "center" }}>
+              <TextField
+                label="name"
+                style={{ width: "90%" }}
+                onChange={e => {
+                  this.name = e.target.value;
+                }}
+              />
+              <TextField
+                label="company"
+                style={{ width: "90%" }}
+                onChange={e => {
+                  this.company = e.target.value;
+                }}
+              />
+            </div>
+          </FormControl>
           <br />
-          <br /> */}
+          <br />
           <Button
             fullWidth
             variant="contained"
+            color="primary"
             onClick={() => {
-              register(this.nickname);
+              const human: HumanData = {
+                address: this.props.addressRegister,
+                name: this.name,
+                company: this.company
+              };
+              register(human);
             }}
           >
-            register
+            Sign Up
           </Button>
         </div>
       </div>
     );
   }
 }
-
-export default withStyles(styles)(RegisterMol);

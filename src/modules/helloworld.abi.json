@@ -1,5 +1,5 @@
 {
-  "hash": "0x5ee6ab6233bed62c9332f74829d6b7a908c9e6bc",
+  "hash": "0x51c03cec855e5e9f616890f7a0801d0bf5b101c8",
   "entrypoint": "Main",
   "functions": [
     {
@@ -9,25 +9,34 @@
     },
     {
       "name": "RegisterPerson",
-      "parameters": [{ "name": "personAddr", "type": "" }, { "name": "company", "type": "" }],
-      "returntype": ""
+      "parameters": [
+        { "name": "personAddr", "type": "String" },
+        { "name": "name", "type": "String" },
+        { "name": "company", "type": "String" }
+      ],
+      "returntype": "Boolean"
     },
-    { "name": "ReadPerson", "parameters": [{ "name": "personAddr", "type": "" }], "returntype": "Array" },
+    { "name": "ReadPerson", "parameters": [{ "name": "personAddr", "type": "" }], "returntype": "" },
     {
       "name": "RegisterCompany",
-      "parameters": [{ "name": "companyAddr", "type": "" }, { "name": "info", "type": "" }],
+      "parameters": [{ "name": "companyAddr", "type": "" }, { "name": "name", "type": "" }],
+      "returntype": ""
+    },
+    {
+      "name": "RegisterCompanyPerson",
+      "parameters": [{ "name": "companyAddr", "type": "" }, { "name": "personAddr", "type": "" }],
       "returntype": ""
     },
     { "name": "ReadCompany", "parameters": [{ "name": "companyAddr", "type": "" }], "returntype": "" },
     {
       "name": "RegisterAuction",
       "parameters": [
-        { "name": "personAddr", "type": "" },
-        { "name": "currentCompanyAddr", "type": "" },
-        { "name": "start", "type": "" },
-        { "name": "end", "type": "" }
+        { "name": "personAddr", "type": "String" },
+        { "name": "currentCompanyAddr", "type": "String" },
+        { "name": "start", "type": "String" },
+        { "name": "end", "type": "String" }
       ],
-      "returntype": ""
+      "returntype": "Boolean"
     },
     {
       "name": "RegisterBid",
@@ -38,6 +47,8 @@
       ],
       "returntype": ""
     },
-    { "name": "ReadBids", "parameters": [{ "name": "personAddr", "type": "" }], "returntype": "" }
+    { "name": "ReadBids", "parameters": [{ "name": "personAddr", "type": "" }], "returntype": "" },
+    { "name": "concatAll", "parameters": [{ "name": "values", "type": "" }], "returntype": "" },
+    { "name": "makeValue", "parameters": [{ "name": "values", "type": "" }], "returntype": "" }
   ]
 }

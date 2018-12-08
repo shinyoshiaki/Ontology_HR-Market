@@ -4,7 +4,7 @@ import { ReduxState } from "src/createStore";
 import { Dispatch } from "redux";
 import MarketTemp from "../../components/templates/market";
 import { drawerList } from "./const";
-import { ContractState } from "../../modules/contract";
+import { ContractState, existAuction, registerAuction } from "../../modules/contract";
 
 interface Props extends ContractState {
   dispatch: Dispatch;
@@ -17,6 +17,17 @@ class Market extends React.Component<Props, States> {
   constructor(props: any) {
     super(props);
     this.state = {};
+    this.init();
+  }
+
+  async init() {
+    const { detailHuman } = this.props;
+    if (detailHuman) {
+      const result = await existAuction(detailHuman.address);
+      if (!result) {
+        await registerAuction(detailHuman.address);
+      }
+    }
   }
 
   onformBitWorker = () => {};

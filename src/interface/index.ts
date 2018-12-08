@@ -6,6 +6,7 @@ export interface JobData {
 }
 
 export interface HumanData {
+  address: string;
   name: string;
   age?: number;
   gender?: number;
@@ -45,6 +46,7 @@ export const makeHumanDataMock = (payload: { [key in keyof HumanData]?: HumanDat
   return Object.assign(
     {},
     {
+      address: "something",
       name: "this is mock string",
       age: 1,
       gender: 1,

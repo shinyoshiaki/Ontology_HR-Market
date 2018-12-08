@@ -23,7 +23,9 @@ class Manage extends React.Component<Props, States> {
     };
   }
 
-  onformAddWorker = (human: HumanData) => {};
+  onformAddWorker = (human: HumanData) => {
+    console.log("add", human);
+  };
 
   onformSetAddress = (address: string) => {};
 

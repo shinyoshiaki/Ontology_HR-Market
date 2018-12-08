@@ -54,7 +54,13 @@ export default class ManageLeftOrg extends React.Component<ImanageLeftOrgProps, 
               background: "white"
             }}
           >
-            <FormAddWorkerMol {...this.props} />
+            <FormAddWorkerMol
+              {...this.props}
+              onformAddWorker={v => {
+                this.props.onformAddWorker(v);
+                this.handleModalClose();
+              }}
+            />
           </div>
         </Modal>
       </div>

@@ -1,5 +1,5 @@
 {
-  "contractHash": "5ee6ab6233bed62c9332f74829d6b7a908c9e6bc",
+  "contractHash": "51c03cec855e5e9f616890f7a0801d0bf5b101c8",
   "abi": {
     "functions": [
       {
@@ -9,13 +9,22 @@
       },
       {
         "name": "RegisterPerson",
-        "parameters": [{ "name": "personAddr", "type": "" }, { "name": "company", "type": "" }],
+        "parameters": [
+          { "name": "personAddr", "type": "" },
+          { "name": "name", "type": "" },
+          { "name": "company", "type": "" }
+        ],
         "returntype": ""
       },
       { "name": "ReadPerson", "parameters": [{ "name": "personAddr", "type": "" }], "returntype": "" },
       {
         "name": "RegisterCompany",
-        "parameters": [{ "name": "companyAddr", "type": "" }, { "name": "info", "type": "" }],
+        "parameters": [{ "name": "companyAddr", "type": "" }, { "name": "name", "type": "" }],
+        "returntype": ""
+      },
+      {
+        "name": "RegisterCompanyPerson",
+        "parameters": [{ "name": "companyAddr", "type": "" }, { "name": "personAddr", "type": "" }],
         "returntype": ""
       },
       { "name": "ReadCompany", "parameters": [{ "name": "companyAddr", "type": "" }], "returntype": "" },
@@ -38,7 +47,9 @@
         ],
         "returntype": ""
       },
-      { "name": "ReadBids", "parameters": [{ "name": "personAddr", "type": "" }], "returntype": "" }
+      { "name": "ReadBids", "parameters": [{ "name": "personAddr", "type": "" }], "returntype": "" },
+      { "name": "concatAll", "parameters": [{ "name": "values", "type": "" }], "returntype": "" },
+      { "name": "makeValue", "parameters": [{ "name": "values", "type": "" }], "returntype": "" }
     ]
   }
 }

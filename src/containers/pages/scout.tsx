@@ -3,27 +3,62 @@ import { connect } from "react-redux";
 import { ReduxState } from "src/createStore";
 import { Dispatch } from "redux";
 import ScoutTemp from "../../components/templates/scout";
-import { ContractState, setContractValue, EcontractValue } from "../../modules/contract";
+import {
+  ContractState,
+  setContractValue,
+  EcontractValue,
+  existPerson,
+  registerPerson,
+  SearchPerson
+} from "../../modules/contract";
 import { HumanData } from "../../interface";
+import { Modal } from "@material-ui/core";
+import FormRegisterMol from "../../components/molecules/register";
 
 interface Props extends ContractState {
   dispatch: Dispatch;
   history: any;
 }
 
-interface States {}
+interface States {
+  modalOpen: boolean;
+}
 
 class Scout extends React.Component<Props, States> {
   constructor(props: any) {
     super(props);
-    this.state = {};
+    this.state = { modalOpen: false };
+    this.init();
   }
 
-  onformSearchHuman = (word: string) => {};
+  async init() {
+    const result = await existPerson();
+    console.log({ result });
+    if (!result) {
+      this.handleModalOpen();
+    }
+  }
+
+  handleModalClose = () => {
+    this.setState({ modalOpen: false });
+  };
+
+  handleModalOpen = () => {
+    this.setState({ modalOpen: true });
+  };
+
+  onformSearchHuman = (word: string) => {
+    SearchPerson(word, this.props.dispatch);
+  };
 
   onViewScout = (human: HumanData) => {
     setContractValue(EcontractValue.detailHuman, human, this.props.dispatch);
     this.props.history.push("/market");
+  };
+
+  onRegister = async (human: HumanData) => {
+    await registerPerson(human);
+    this.handleModalClose();
   };
 
   render() {
@@ -37,6 +72,25 @@ class Scout extends React.Component<Props, States> {
           listResultSearchHumans={listResultSearchHumans}
           onViewScout={this.onViewScout}
         />
+        <Modal
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+          open={this.state.modalOpen}
+          onClose={this.handleModalClose}
+          style={{ display: "flex" }}
+        >
+          <div
+            style={{
+              width: "60%",
+              height: "auto",
+              flex: "0 1 auto",
+              margin: "auto",
+              background: "white"
+            }}
+          >
+            <FormRegisterMol addressRegister={myAddress ? myAddress : "error"} register={this.onRegister} />
+          </div>
+        </Modal>
       </div>
     );
   }
