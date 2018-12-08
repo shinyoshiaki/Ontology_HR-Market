@@ -3,10 +3,10 @@ import HeaderOrg, { IheaderOrgProps } from "../../organisms/header";
 import ManageLeftOrg, { ImanageLeftOrgProps } from "../../organisms/manageLeft";
 import ManageRightOrg, { ImanageRightOrgProps } from "../../organisms/manageRight";
 
-export interface ISellTempProps extends ImanageLeftOrgProps, ImanageRightOrgProps, IheaderOrgProps {}
+export interface ImangeTempProps extends ImanageLeftOrgProps, ImanageRightOrgProps, IheaderOrgProps {}
 
-export default class SellTemp extends React.Component<ISellTempProps, {}> {
-  constructor(props: ISellTempProps) {
+export default class ManageTemp extends React.Component<ImangeTempProps, {}> {
+  constructor(props: ImangeTempProps) {
     super(props);
   }
 
