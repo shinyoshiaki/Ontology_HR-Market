@@ -3,7 +3,9 @@ import ListWorkerMol, { IlistWorkerProps } from "../../molecules/listWorkers";
 import { Button, Modal } from "@material-ui/core";
 import FormAddWorkerMol, { IformAddWorkerProps } from "../../molecules/formAddWorker";
 
-export interface ImanageLeftOrgProps extends IlistWorkerProps, IformAddWorkerProps {}
+export interface ImanageLeftOrgProps extends IlistWorkerProps, IformAddWorkerProps {
+  style?: React.CSSProperties;
+}
 
 export interface ImanageLeftOrgStates {
   modalOpen: boolean;
@@ -25,9 +27,15 @@ export default class ManageLeftOrg extends React.Component<ImanageLeftOrgProps, 
 
   public render() {
     return (
-      <div>
-        <ListWorkerMol {...this.props} />
-        <Button onClick={this.handleModalOpen}>test</Button>
+      <div style={this.props.style}>
+        <div style={{ display: "flex", minHeight: "90vh", flexDirection: "column" }}>
+          <div style={{ flex: 1 }}>
+            <ListWorkerMol {...this.props} />
+          </div>
+          <Button onClick={this.handleModalOpen} style={{ marginTop: "auto" }}>
+            test
+          </Button>
+        </div>
         <Modal
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"

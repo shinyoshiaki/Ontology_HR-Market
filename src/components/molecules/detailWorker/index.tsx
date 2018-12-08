@@ -3,6 +3,7 @@ import { HumanData } from "../../../interface";
 
 export interface IdetailWorkerProps {
   detailHuman?: HumanData;
+  style?: React.CSSProperties;
 }
 
 export interface IdetailWorkerState {}
@@ -14,6 +15,6 @@ export default class DetailWorkerMol extends React.Component<IdetailWorkerProps,
 
   render() {
     const { detailHuman } = this.props;
-    return <div>{JSON.stringify(detailHuman)}</div>;
+    return <div style={this.props.style}>{JSON.stringify(detailHuman)}</div>;
   }
 }

@@ -47,8 +47,6 @@ export function address2scriptHash(address: string) {
   return ad.serialize();
 }
 
-
-
 interface Iinvoke {
   scriptHash: string;
   operation: string;
@@ -72,6 +70,27 @@ export async function onScCall(values: Iinvoke) {
         gasPrice,
         gasLimit,
         requireIdentity
+      });
+      console.log("onScCall finished, result:" + JSON.stringify(result));
+      resolve(result);
+    } catch (e) {
+      console.log("onScCall error:", e);
+      reject(e);
+    }
+  });
+}
+
+export async function onScCallRead(values: Iinvoke) {
+  return new Promise<object>(async (resolve, reject) => {
+    client.registerClient({});
+    const { scriptHash, operation, args } = values;
+
+    console.log({ args });
+    try {
+      const result = await client.api.smartContract.invokeRead({
+        scriptHash,
+        operation,
+        args
       });
       console.log("onScCall finished, result:" + JSON.stringify(result));
       resolve(result);

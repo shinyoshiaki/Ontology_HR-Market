@@ -4,7 +4,7 @@ import ViewBitResult, { IviewBitResultProps } from "../../atoms/viewBitResult";
 
 export interface IlistResultBitProps extends IviewBitResultProps {
   listResultBit: HumanData[];
-  style?: object;
+  style?: React.CSSProperties;
 }
 
 export interface IlistResultBitState {}
@@ -20,6 +20,10 @@ export default class ListResultBitMol extends React.Component<IlistResultBitProp
   }
 
   render() {
-    return <div style={this.props.style}>{this.props.listResultBit.map((v, i) => this.renderComment(v, i))}</div>;
+    return (
+      <div style={{ ...this.props.style, overflow: "scroll" }}>
+        {this.props.listResultBit.map((v, i) => this.renderComment(v, i))}
+      </div>
+    );
   }
 }

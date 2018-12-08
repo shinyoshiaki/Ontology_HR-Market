@@ -27,6 +27,6 @@ export default class ListBidMol extends React.Component<IlistBidProps, IlistBidS
   }
 
   render() {
-    return <div>{this.props.listBid.map((v, i) => this.renderComment(v, i))}</div>;
+    return <div style={{ overflow: "scroll" }}>{this.props.listBid.map((v, i) => this.renderComment(v, i))}</div>;
   }
 }

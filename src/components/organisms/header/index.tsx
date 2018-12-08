@@ -4,7 +4,7 @@ import { AppBar, Toolbar, IconButton, Typography } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import DrawerMol, { IdrawerMolProps } from "../../molecules/drawer";
 export interface IheaderOrgProps extends IdrawerMolProps {
-  style?: object;
+  style?: React.CSSProperties;
   myAddress: string;
 }
 
@@ -40,10 +40,10 @@ export default class HeaderOrg extends React.Component<IheaderOrgProps, IheaderO
               <MenuIcon />
             </IconButton>
             <Typography variant="title" color="inherit" noWrap>
-              ハッカソン
+              HR market
             </Typography>
             <Typography variant="title" color="inherit" noWrap style={{ marginLeft: "auto" }}>
-              {this.props.myAddress}
+              アドレス: {this.props.myAddress}
             </Typography>
           </Toolbar>
         </AppBar>

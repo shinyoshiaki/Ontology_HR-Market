@@ -14,8 +14,10 @@ export default class ManageTemp extends React.Component<ImangeTempProps, {}> {
     return (
       <div>
         <HeaderOrg {...this.props} />
-        <ManageLeftOrg {...this.props} />
-        <ManageRightOrg {...this.props} />
+        <div style={{ display: "flex" }}>
+          <ManageLeftOrg {...this.props}  style={{ flex: 1 }} />
+          <ManageRightOrg {...this.props}  style={{ flex: 3}} />
+        </div>
       </div>
     );
   }
