@@ -1,14 +1,12 @@
 from boa.interop.System.Runtime import Log
 from boa.interop.System.Runtime import Notify
 from boa.interop.System.Storage import Put, GetContext, Get, Delete
+from boa.interop.System.Runtime import Notify, Serialize, Deserialize
 from boa.builtins import concat
 
 ctx = GetContext()
 
 def Main(operation, args):
-    if operation == 'Hello': # operationを見てDispatch
-        msg = args[0]
-        return Hello(msg)
 
     if operation == 'RegisterPerson':
         return RegisterPerson(args[0], args[1])
@@ -22,32 +20,40 @@ def Main(operation, args):
     if operation == 'ReadCompany':
         return ReadCompany(args[0])
     
+    if operation == 'RegisterAuction':
+        return RegisterAuction(args[0], args[1], args[2], args[3])
+        
+    if operation == 'RegisterBid':
+        return RegisterBid(args[0], args[1], args[2])
+        if operation == 'ReadBids':
+        return ReadBids(args[0])
+        
     return False
     
-def Hello(msg):
-    Notify(msg) 
-    return True 
-    
-def RegisterPerson(personAddr, info):
+def RegisterPerson(personAddr, company):
     Notify(personAddr)
     key = concat("person_", personAddr)
-    Put(ctx, key, info)
-    v = Get(ctx, key)
-    Notify(v)
-    
+    info = {
+        'company': company
+    }
+
+    Put(ctx, key, Serialize(info))
+
     return True
 
 def ReadPerson(personAddr):
     key = concat("person_", personAddr)
-    Notify(key)
     v = Get(ctx, key)
     Notify(v)
-
-    return v
+    
+    info = Deserialize(v)
+    Notify('company:' + info['company'])
+    infoList = ['company:' + info['company']]
+    return infoList
 
 def RegisterCompany(companyAddr, info):
     key = concat("company_", companyAddr)
-    Put(ct, key, info)
+    Put(ctx, key, info)
     
     return True
     
@@ -57,26 +63,56 @@ def ReadCompany(companyAddr):
     Notify(v)
 
     return v
-    
-def RegisterBid(personAddr, companyAddr, price):
-    # check date
-    
-    # check auction
-    if true:
-        # exit
-    else:
-        # create auction
 
-#    # generate random
-#    key = ''
+def RegisterAuction(personAddr, currentCompanyAddr, start, end):
+    map = {
+        "person_address": personAddr,
+        "current_company_address": currentCompanyAddr,
+        "start": str(start),
+        "end": str(end)
+    }
+
+    Notify(Serialize(map))
+    Put(ctx, concat('auction_', personAddr), Serialize(map))
+    
+    return True
+
+#def ReadAuction():
+#    personAddr = 'aaa'
+#    mapInfo = Get(ctx, concat('auction_', personAddr))
+    
+#    list = ['person_address:' + mapInfo['person_address']]
+#    return lest
+
+# def getAuction():
+#     mapInfo = Get(ctx, concat('auction_', personAddr))
+#     map1 = Deserialize(mapInfo)
+#     pA = map1["person_address"]
+#     # return map1, wrong
+#     cCA = map1["person_address"]
+#     # return [pA, cCA] correct
+#     list1 = []
+#     list1.appen
+
+def RegisterBid(personAddr, companyAddr, price):
+    # check date 
+    auction = Get(ctx, concat('auction_', personAddr))
+    auction = Deserialize(auction)
+    now = GetTime() # TODO
+    
     # read last index
-    idx = 0
-    idx = idx + 1
+    idx = Get(ctx, concat('latest_bid_index_', personAddr))
+    idx = int(idx, 10)
+    idx += 1
     key = concat(concat(concat('bid_', personAddr), '_'), idx)
     
     # create info json
-    info = ''
-    Put(ctx, key, info)
+    info = {
+        "company_address": companyAddr, # TODO sender?
+        "price": price,
+        "date": now
+    }
+    Put(ctx, key, Serialize(info))
     
     # register latest bid index
     Put(ctx, concat('latest_bid_index_', personAddr), idx)
@@ -89,24 +125,14 @@ def ReadBids(personAddr):
     
     # get latest bid index
     idx = Get(ctx, concat('latest_bid_index_', personAddr));
+    idx = int(idx, 10)
+    Notify(idx)
     for i in range(idx):
-        key = concat(concat('bid_', personAddr), i)
+        key = concat(concat(concat('bid_', personAddr), '_'), i)
+        Notify(key)
         v = Get(ctx, key)
-        if !v:
+        Notify(v)
+        if v is not None:
             bids.append(v)
-    bidsJson = json.Serialize(bids)
     
-    
-    return bidsJson
-    
-def CloseAuction(personAddr):
-    # get auction entity
-
-    # get next company address    
-    # check amount of next company address
-    
-    # get current company address
-    # transfer
-    
-    # change company
-    
+    return bids
