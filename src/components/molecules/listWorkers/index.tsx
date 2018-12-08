@@ -4,7 +4,7 @@ import { HumanData } from "../../../interface";
 export interface IlistWorkerProps {
   listWorkers: HumanData[];
   maxheight?: string;
-  style?: object;
+  style?: React.CSSProperties;
 }
 
 export interface IlistWorkerState {}

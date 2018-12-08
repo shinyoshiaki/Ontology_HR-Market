@@ -1,7 +1,9 @@
 import * as React from "react";
 import DetailWorkerMol, { IdetailWorkerProps } from "../../molecules/detailWorker";
 
-export interface ImanageRightOrgProps extends IdetailWorkerProps {}
+export interface ImanageRightOrgProps extends IdetailWorkerProps {
+  style?: React.CSSProperties;
+}
 
 export default class ManageRightOrg extends React.Component<ImanageRightOrgProps, {}> {
   constructor(props: ImanageRightOrgProps) {
@@ -10,7 +12,7 @@ export default class ManageRightOrg extends React.Component<ImanageRightOrgProps
 
   public render() {
     return (
-      <div>
+      <div style={this.props.style}>
         <DetailWorkerMol {...this.props} />{" "}
       </div>
     );

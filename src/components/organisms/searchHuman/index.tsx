@@ -3,7 +3,7 @@ import FormSearchHuman, { IformSearchHumanProps } from "../../molecules/formSear
 import ListResultSearchHuman, { IlistResultSearchHumanProps } from "../../molecules/listResultSearchHuman";
 
 export interface IsearchHumanOrgProps extends IformSearchHumanProps, IlistResultSearchHumanProps {
-  style?: object;
+  style?: React.CSSProperties;
 }
 
 export default class SearchHumanOrg extends React.Component<IsearchHumanOrgProps, {}> {

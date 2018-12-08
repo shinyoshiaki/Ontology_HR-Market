@@ -6,7 +6,7 @@ import {
 } from "ontology-ts-sdk";
 import * as json from "./helloworld.abi.json";
 import { Dispatch, Action } from "redux";
-import { onScCall } from "./wallet";
+// import { onScCall } from "./wallet";
 
 // const rest = new RestClient("http://polaris1.ont.io:20334");
 const abiInfo = AbiInfo.parseJson(JSON.stringify(json));
@@ -23,13 +23,19 @@ async function test() {
   //     .catch(console.log);
   //   console.log({ result });
 
-  await onScCall({
-    scriptHash: codeHash,
-    operation: abiFunction.name,
-    args: abiFunction.parameters,
-    gasLimit: 20000,
-    gasPrice: 500
-  }).catch(console.log);
+//   await onScCall({
+//     scriptHash: codeHash,
+//     operation: abiFunction.name,
+//     args: abiFunction.parameters,
+//     gasLimit: 20000,
+//     gasPrice: 500
+//   }).catch(console.log);
+
+//   await onScCall({
+//     scriptHash: codeHash,
+//     operation: abiFunction.name,
+//     args: abiFunction.parameters
+//   }).catch(console.log);
 }
 
 test();

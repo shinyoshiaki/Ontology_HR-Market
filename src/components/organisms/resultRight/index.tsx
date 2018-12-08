@@ -3,7 +3,7 @@ import DetailWorkerMol, { IdetailWorkerProps } from "../../molecules/detailWorke
 import FormResultApproveMol, { IformResultApproveProps } from "../../molecules/formResultApprove";
 
 export interface IresultRightOrgProps extends IdetailWorkerProps, IformResultApproveProps {
-  style?: object;
+  style?: React.CSSProperties;
 }
 
 export default class ResultRightOrg extends React.Component<IresultRightOrgProps, {}> {
@@ -19,6 +19,8 @@ export default class ResultRightOrg extends React.Component<IresultRightOrgProps
             <DetailWorkerMol {...this.props} />
           </div>
           <div style={{ textAlign: "center" }}>
+            <p>雇用契約完了後に押下してください。</p>
+            <p>受け入れ元の企業へ確認ののち人事データを移植します。</p>
             <FormResultApproveMol {...this.props} style={{ marginTop: "auto" }} />
           </div>
         </div>

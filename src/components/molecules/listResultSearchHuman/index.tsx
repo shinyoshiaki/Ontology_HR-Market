@@ -4,7 +4,7 @@ import { HumanData } from "../../../interface";
 export interface IlistResultSearchHumanProps {
   listResultSearchHumans: HumanData[];
   maxheight?: string;
-  style?: object;
+  style?: React.CSSProperties;
 }
 
 export interface IlistResultSearchHumanState {}
