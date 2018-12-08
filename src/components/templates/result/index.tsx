@@ -3,7 +3,7 @@ import HeaderOrg, { IheaderOrgProps } from "../../organisms/header";
 import ListResultBitMol, { IlistResultBitProps } from "../../molecules/listResultBit";
 import ResultRightOrg, { IresultRightOrgProps } from "../../organisms/resultRight";
 
-export interface IResultTempProps extends IheaderOrgProps, IlistResultBitProps ,IresultRightOrgProps{}
+export interface IResultTempProps extends IheaderOrgProps, IlistResultBitProps, IresultRightOrgProps {}
 
 export interface IResultTempState {}
 
@@ -16,8 +16,10 @@ export default class ResultTemp extends React.Component<IResultTempProps, IResul
     return (
       <div>
         <HeaderOrg {...this.props} />
-        <ListResultBitMol {...this.props} />
-        <ResultRightOrg {...this.props} />
+        <div style={{ display: "flex" }}>
+          <ListResultBitMol {...this.props} style={{ flex: 1 }} />
+          <ResultRightOrg {...this.props} style={{ flex: 3 }} />
+        </div>
       </div>
     );
   }

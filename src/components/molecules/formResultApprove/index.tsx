@@ -3,6 +3,7 @@ import { Button } from "@material-ui/core";
 
 export interface IformResultApproveProps {
   onformResultApprove: () => void;
+  style?: React.CSSProperties;
 }
 
 export interface IformResultApproveState {}
@@ -17,7 +18,7 @@ export default class FormResultApproveMol extends React.Component<IformResultApp
 
   render() {
     return (
-      <div>
+      <div style={this.props.style}>
         ok?
         <Button
           onClick={() => {

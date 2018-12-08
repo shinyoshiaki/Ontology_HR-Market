@@ -4,6 +4,7 @@ import { ReduxState } from "src/createStore";
 import { Dispatch } from "redux";
 import { Walletstate } from "../../modules/wallet";
 import ManageTemp from "../../components/templates/manage";
+import { makeHumanDatasMock } from "../../interface";
 
 interface Props extends Walletstate {
   dispatch: Dispatch;
@@ -23,7 +24,12 @@ class Manage extends React.Component<Props, States> {
     const { history } = this.props;
     return (
       <div>
-        <ManageTemp myAddress="" listWorkers={[]} onformAddWorker={this.onformAddWorker} history={history} />
+        <ManageTemp
+          myAddress=""
+          listWorkers={makeHumanDatasMock().datas}
+          onformAddWorker={this.onformAddWorker}
+          history={history}
+        />
       </div>
     );
   }

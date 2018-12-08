@@ -1,0 +1,44 @@
+{
+  "contractHash": "5ee6ab6233bed62c9332f74829d6b7a908c9e6bc",
+  "abi": {
+    "functions": [
+      {
+        "name": "Main",
+        "parameters": [{ "name": "operation", "type": "" }, { "name": "args", "type": "" }],
+        "returntype": ""
+      },
+      {
+        "name": "RegisterPerson",
+        "parameters": [{ "name": "personAddr", "type": "" }, { "name": "company", "type": "" }],
+        "returntype": ""
+      },
+      { "name": "ReadPerson", "parameters": [{ "name": "personAddr", "type": "" }], "returntype": "" },
+      {
+        "name": "RegisterCompany",
+        "parameters": [{ "name": "companyAddr", "type": "" }, { "name": "info", "type": "" }],
+        "returntype": ""
+      },
+      { "name": "ReadCompany", "parameters": [{ "name": "companyAddr", "type": "" }], "returntype": "" },
+      {
+        "name": "RegisterAuction",
+        "parameters": [
+          { "name": "personAddr", "type": "" },
+          { "name": "currentCompanyAddr", "type": "" },
+          { "name": "start", "type": "" },
+          { "name": "end", "type": "" }
+        ],
+        "returntype": ""
+      },
+      {
+        "name": "RegisterBid",
+        "parameters": [
+          { "name": "personAddr", "type": "" },
+          { "name": "companyAddr", "type": "" },
+          { "name": "price", "type": "" }
+        ],
+        "returntype": ""
+      },
+      { "name": "ReadBids", "parameters": [{ "name": "personAddr", "type": "" }], "returntype": "" }
+    ]
+  }
+}
