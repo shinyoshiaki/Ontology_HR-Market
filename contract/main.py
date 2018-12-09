@@ -27,8 +27,6 @@ def Main(operation, args):
     if operation == 'RegisterPerson':
         return RegisterPerson(args[0], args[1], args[2])
     
-    if operation == 'ReadPerson':
-        return ReadPerson(args[0])
     
     if operation == 'RegisterCompany':
         return RegisterCompany(args[0], args[1])
@@ -36,8 +34,6 @@ def Main(operation, args):
     if operation == 'RegisterCompanyPerson':
         return RegisterCompanyPerson(args[0], args[1])
     
-    if operation == 'ReadCompany':
-        return ReadCompany(args[0])
     
     if operation == 'RegisterAuction':
         return RegisterAuction(args[0], args[1], args[2], args[3])
@@ -45,8 +41,6 @@ def Main(operation, args):
     if operation == 'RegisterBid':
         return RegisterBid(args[0], args[1], args[2])
         
-    if operation == 'ReadBids':
-        return ReadBids(args[0])
         
     if operation == 'CloseAuction':
         return CloseAuction(args[0])
@@ -110,6 +104,7 @@ def RegisterPerson(personAddr, name, company):
         personsList = Deserialize(personsList)
     else:
         personsList = []
+
     personsList.append(personAddr)
     personsStr = makeValue(personsList, '$')
     Put(ctx, 'persons_list', Serialize(personsList))
@@ -117,15 +112,6 @@ def RegisterPerson(personAddr, name, company):
 
     return True
    
-def ReadPerson(personAddr):
-    key = concat("person_", personAddr)
-    v = Get(ctx, key)
-    Notify(v)
-    
-    val = Deserialize(v)
-    Notify('company:' + val['company'])
-    valList = ['company:' + val['company']]
-    return valList
 
 def RegisterCompany(companyAddr, name):
     key = concat('company_', companyAddr)
@@ -172,12 +158,6 @@ def RegisterCompanyPerson(companyAddr, personAddr):
     Put(ctx,concat("person_", personAddr),companyAddr)
     return True
     
-def ReadCompany(companyAddr):
-    key = concat("company_", companyAddr)
-    v = Get(ctx, key)
-    Notify(v)
-
-    return v
 
 def RegisterAuction(personAddr, currentCompanyAddr, start, end):
     val = makeValue([personAddr, currentCompanyAddr, start, end], '$')
@@ -240,22 +220,6 @@ def RegisterBid(personAddr, companyAddr, price):
     
     return True
 
-def ReadBids(auctionAddr):
-    bids = list()
-    # get latest bid index
-    idx = Get(ctx, concat('latest_bid_index_', auctionAddr));
-    for i in range(0, idx):
-        key = concat(concat('bid_', auctionAddr), i)
-        v = Get(ctx, key)
-        if v:
-            bids.append(v)
-        
-    return bids
-
-def ReadAuction(auctionAddr):
-    # get auction entity
-    ReadBids(auctionAddr)
-    return Get(ctx, concat('auction_',auctionAddr))
 
 def CloseAuction(personAddr):
     
@@ -283,8 +247,11 @@ def CloseAuction(personAddr):
     transfer(nextCompanyAddress, currentCompanyAddress, amount)
        
     # change company
-    personData['company'] = nextCompanyAddress
-    # RegisterPerson(personAddr, personData)
+    company = Get(ctx, concat('company_', nextCompanyAddress))
+    personData['company'] = company
+    
+
+    Put(ctx,concatAll("person_", personAddr,'_map'), Serialize(person))
     
     return True
 
