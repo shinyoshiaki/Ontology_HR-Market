@@ -88,9 +88,31 @@ async function getPerson(address: string) {
   }
 }
 
-export async function SearchPerson(address: string, dispatch: Dispatch<SetValueAction>) {
-  const human = await getPerson(address);
-  setContractValue(EcontractValue.listResultSearchHumans, [human], dispatch);
+// export async function SearchPerson(address: string, dispatch: Dispatch<SetValueAction>) {
+//   const human = await getPerson(address);
+//   setContractValue(EcontractValue.listResultSearchHumans, [human], dispatch);
+// }
+let listenAllPersonsFlag = false;
+export async function listenAllPersons(dispatch: Dispatch<SetValueAction>) {
+  if (listenAllPersonsFlag) return undefined;
+  listenAllPersonsFlag = true;
+  const url = "persons";
+  const interval = setInterval(async () => {
+    const result = await rest.getStorage(codeHash, Buffer.from(url, "ascii").toString("hex")).catch(console.log);
+    if (!result || !result.Result) return;
+    const arr = Buffer.from(result.Result, "hex")
+      .toString("ascii")
+      .split("$");
+    const humans: HumanData[] = [];
+    for (const address of arr) {
+      const human = await getPerson(address);
+      if (human) {
+        humans.push(human);
+      }
+    }
+    setContractValue(EcontractValue.listResultSearchHumans, humans, dispatch);
+  }, 1000);
+  return interval;
 }
 
 export async function registerPerson(human: HumanData) {
@@ -178,6 +200,21 @@ export async function listenCloseAuction(address: string, cb?: () => void) {
       if (cb) cb();
     }
   }, 1000);
+}
+
+export async function finishAuction(address: string) {
+  const abiFunction = abiInfo.getFunction("CloseAuction");
+  abiFunction.setParamsValue(new Parameter(abiFunction.parameters[0].getName(), ParameterType.String, address));
+  const result = await onScCall({
+    scriptHash: codeHash,
+    operation: abiFunction.name,
+    args: abiFunction.parameters,
+    gasLimit: 20000,
+    gasPrice: 500
+  }).catch(console.log);
+  if (result) {
+    console.log("success", result);
+  }
 }
 
 export async function registerBid(address: string, companyAddress: string, price: number) {
