@@ -1,8 +1,12 @@
 from boa.interop.System.Storage import Put, GetContext, Get, Delete
 from boa.interop.System.Runtime import Notify, Serialize, Deserialize, GetTime, Notify, Log
 from boa.builtins import concat
+from boa.interop.Ontology.Native import Invoke
+
+MESIToken = RegisterAppCall('fa80553aec57a57d406cde1549b47f0bad96f7c4', 'operation', 'args')
 
 ctx = GetContext()
+contractAddress = bytearray(b'\xc4\xf7\x96\xad\x0b\x7f\xb4\x49\x15\xde\x6c\x40\x7d\xa5\x57\xec\x3a\x55\x80\xfa')
 
 def Main(operation, args):
 
@@ -30,6 +34,12 @@ def Main(operation, args):
     if operation == 'ReadBids':
         return ReadBids(args[0])
         
+    if operation == 'CloseAuction':
+        return CloseAuction(args[0])
+    
+    if operation == 'transfer':
+        return transfer(args[0],args[1],args[2])
+
     return False
 
 
@@ -115,28 +125,89 @@ def RegisterBid(personAddr, companyAddr, price):
     # create value
     val = makeValue([companyAddr, price, now])
     Put(ctx, key, val)
+
+def ReadBids(auctionAddr):
+    bids = list()
+    # get latest bid index
+    idx = Get(ctx, concat('latest_bid_index_', auctionAddr));
+    for i in range(idx):
+        key = concat(concat('bid_', auctionAddr), i)
+        v = Get(ctx, key)
+        if v:
+            bids.append(v)
+        
+    return bids
+
+def ReadAuction(auctionAddr):
+    # get auction entity
+    ReadBids(auctionAddr)
+    return Get(ctx, concat('auction_',auctionAddr))
+
+def CloseAuction(personAddr):
     
-    # register latest bid index
-    Put(ctx, concat('latest_bid_index_', personAddr), idx)
-    
-    return True
-    
-def ReadBids(personAddr):
-    
+    # get highest bid
     bids = []
-    
     # get latest bid index
     idx = Get(ctx, concat('latest_bid_index_', personAddr));
-    Notify(idx)
-    for i in range(idx):
-        key = concatAll(['bid_', personAddr, '_', i])
-        Notify(key)
+    if idx <= 0 : 
+        return False
+    
+    i = 0 
+    while i < idx:
+        key = concat(concat('bid_', personAddr), i)
         v = Get(ctx, key)
-        Notify(v)
-        if v is not None:
+        if v:
             bids.append(v)
     
-    return bids
+    highestBids = getHighestBid(bids)
+
+    amount = highestBids['price']
+    nextCompanyAddress = highestBids['company_address']
+
+    # check amount of next company address
+#    if amount > BalanceOf(nextCompanyAddress):
+ #       return False
+       
+    # get current company address
+    personData = ReadPerson(personAddr)
+    currentCompanyAddress = personData['company']
+        
+    # transfer
+    transfer(nextCompanyAddress, currentCompanyAddress, amount)
+       
+    # change company
+    personData['company'] = nextCompanyAddress
+    RegisterPerson(personAddr, personData)
+    
+    return True
+
+
+def getHighestBid(bids):
+    high = bids[0]
+    for bid in bids:
+        if bid["price"] > high['price']:
+            high = bid
+            
+    return high
+    
+
+def transfer(fromacct, toacct, amount):
+
+    res = MESIToken( 'transfer', [fromacct, toacct, amount])
+    Notify(res)
+
+    if res and res == b'\x01':
+        Notify('transfer succeed')
+        return True
+    else:
+        Notify('transfer failed')
+
+        return False
+
+
+def makeState(fromacct, toacct, amount):
+    return state(fromacct, toacct, amount)
+
 
 def concatAll(values):
     val = ''
@@ -144,6 +215,7 @@ def concatAll(values):
         val = concat(val, values[i])
         
     return val
+
     
 def makeValue(values):
     val = ''
