@@ -9,7 +9,7 @@ import {
   EcontractValue,
   existPerson,
   registerPerson,
-  SearchPerson
+  listenAllPersons
 } from "../../modules/contract";
 import { HumanData } from "../../interface";
 import { Modal } from "@material-ui/core";
@@ -38,6 +38,7 @@ class Scout extends React.Component<Props, States> {
     if (!result) {
       this.handleModalOpen();
     }
+    listenAllPersons(this.props.dispatch);
   }
 
   handleModalClose = () => {
@@ -46,10 +47,6 @@ class Scout extends React.Component<Props, States> {
 
   handleModalOpen = () => {
     this.setState({ modalOpen: true });
-  };
-
-  onformSearchHuman = (word: string) => {
-    SearchPerson(word, this.props.dispatch);
   };
 
   onViewScout = (human: HumanData) => {
@@ -73,7 +70,6 @@ class Scout extends React.Component<Props, States> {
         <ScoutTemp
           myAddress={myAddress ? myAddress : "error"}
           history={history}
-          onformSearchHuman={this.onformSearchHuman}
           listResultSearchHumans={listResultSearchHumans}
           onViewScout={this.onViewScout}
           detailHuman={this.state.detailHuman}
