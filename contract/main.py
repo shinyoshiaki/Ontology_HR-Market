@@ -168,10 +168,15 @@ def CloseAuction(personAddr):
         if v:
             bids.append(v)
     
-    highestBids = getHighestBid(bids)
+    highestBids = getHighestBid(personAddr)
 
     amount = highestBids['price']
     nextCompanyAddress = highestBids['company_address']
+    
+    Notify("amount")
+    Notify(amount)
+    Notify("nextCompanyAddress")
+    Notify(nextCompanyAddress)
 
     # check amount of next company address
 #    if amount > BalanceOf(nextCompanyAddress):
@@ -191,13 +196,8 @@ def CloseAuction(personAddr):
     return True
 
 
-def getHighestBid(bids):
-    high = bids[0]
-    for bid in bids:
-        if bid["price"] > high['price']:
-            high = bid
-            
-    return high
+def getHighestBid(personAddr):
+    return Get(ctx, concat('highest_bid_',personAddr)
     
 
 def transfer(fromacct, toacct, amount):
