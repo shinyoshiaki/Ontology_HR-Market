@@ -223,7 +223,8 @@ def CloseAuction(personAddr):
  #       return False
        
     # get current company address
-    personData = Deserialize(Get(ctx,concat("person_", personAddr)))
+    person = Get(ctx,concatAll(["person_", personAddr,'_map']))
+    personData = Deserialize(person)
     currentCompanyAddress = personData['company_address']
         
     # transfer
