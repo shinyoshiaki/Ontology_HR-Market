@@ -22,6 +22,7 @@ interface Props extends ContractState {
 
 interface States {
   modalOpen: boolean;
+  detailHuman?: HumanData;
 }
 
 class Scout extends React.Component<Props, States> {
@@ -52,7 +53,11 @@ class Scout extends React.Component<Props, States> {
   };
 
   onViewScout = (human: HumanData) => {
-    setContractValue(EcontractValue.detailHuman, human, this.props.dispatch);
+    this.setState({ detailHuman: human });
+  };
+
+  openAuction = () => {
+    setContractValue(EcontractValue.detailHuman, this.state.detailHuman, this.props.dispatch);
     this.props.history.push("/market");
   };
 
@@ -71,6 +76,8 @@ class Scout extends React.Component<Props, States> {
           onformSearchHuman={this.onformSearchHuman}
           listResultSearchHumans={listResultSearchHumans}
           onViewScout={this.onViewScout}
+          detailHuman={this.state.detailHuman}
+          openAuction={this.openAuction}
         />
         <Modal
           aria-labelledby="simple-modal-title"
