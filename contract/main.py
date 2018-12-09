@@ -148,16 +148,21 @@ def RegisterBid(personAddr, companyAddr, price):
             'company_address': companyAddr,
             'price': price
         }
+    hKey = concat('highest_bid_', personAddr)
+    hMapKey = concat(hKey, '_map')
     if (len(bidsList) == 0):
-        Put(ctx, concat('highest_bid_', personAddr), Serialize(curBid))
+        Put(ctx, hKey, bidStr)
+        Put(ctx, hMapKey, Serialize(curBid))
     else:
-        highestBid = Get(ctx, concat('highest_bid_', personAddr))
+        highestBid = Get(ctx, hMapKey)
         if highestBid is not None:
             highestBid = Deserialize(highestBid)
             if highestBid['price'] <= price:
-                Put(ctx, concat('highest_bid_', personAddr), Serialize(curBid))
+                Put(ctx, hKey, bidStr)
+                Put(ctx, hMapKey, Serialize(curBid))
         else:
-            Put(ctx, concat('highest_bid_', personAddr), Serialize(curBid))
+            Put(ctx, hKey, bidStr)
+            Put(ctx, hMapKey, Serialize(curBid))
     
     return True
 
@@ -210,7 +215,7 @@ def CloseAuction(personAddr):
 
 
 def getHighestBid(personAddr):
-    return Deserialize(Get(ctx, concat('highest_bid_',personAddr)))
+    return Deserialize(Get(ctx, concatAll(['highest_bid_', personAddr, '_map'])))
     
 
 def transfer(fromacct, toacct, amount):
