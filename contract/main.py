@@ -162,8 +162,7 @@ def CloseAuction(personAddr):
     if idx <= 0 : 
         return False
     
-    i = 0 
-    while i < idx:
+    for i in range(0, idx):
         key = concat(concat('bid_', personAddr), i)
         v = Get(ctx, key)
         if v:
