@@ -46,14 +46,25 @@ def Main(operation, args):
 def RegisterPerson(personAddr, name, company):
     key = concat("person_", personAddr)
     val = makeValue([name, company], '$')
-    
+
     person = {'name':name,'company':company}
-    Put(ctx,concat(key,'_map'),Serialize(person))
+    Put(ctx,concat(key,'_map'), Serialize(person))
 
     Put(ctx, key, val)
 
+    # create persons list
+    personsList = Get(ctx, 'persons_list')
+    if personsList is not None:
+        personsList = Deserialize(personsList)
+    else:
+        personsList = []
+    personsList.append(personAddr)
+    personsStr = makeValue(personsList, '$')
+    Put(ctx, 'persons_list', Serialize(personsList))
+    Put(ctx, 'persons', personsStr)
+
     return True
-    
+   
 def ReadPerson(personAddr):
     key = concat("person_", personAddr)
     v = Get(ctx, key)
@@ -67,9 +78,20 @@ def ReadPerson(personAddr):
 def RegisterCompany(companyAddr, name):
     key = concat('company_', companyAddr)
     Put(ctx, key, name)
-    
+
+    # create companies list
+    cList = Get(ctx, 'companies_list')
+    if cList is not None:
+        cList = Deserialize(cList)
+    else:
+        cList = []
+    cList.append(companyAddr)
+    cStr = makeValue(cList, '$')
+    Put(ctx, 'companies_list', Serialize(cList))
+    Put(ctx, 'companies', cStr)
+
     return True
-    
+   
 def RegisterCompanyPerson(companyAddr, personAddr):
     key = concatAll(['company_', companyAddr, '_persons'])
     Notify(key)
