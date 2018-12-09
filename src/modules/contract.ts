@@ -161,7 +161,7 @@ export async function registerAuction(address: string) {
     new Parameter(abiFunction.parameters[0].getName(), ParameterType.String, address),
     new Parameter(abiFunction.parameters[1].getName(), ParameterType.String, human.company),
     new Parameter(abiFunction.parameters[2].getName(), ParameterType.String, Date.now().toString()),
-    new Parameter(abiFunction.parameters[3].getName(), ParameterType.String, (Date.now() + 1000 * 40).toString())
+    new Parameter(abiFunction.parameters[3].getName(), ParameterType.String, (Date.now() + 1000 * 60).toString())
     // 30
   );
   const result = await onScCall({
@@ -196,7 +196,11 @@ async function isAuctionClosed(address: string) {
 }
 
 let listenCloseAuctionFlag = false;
-export async function listenCloseAuction(address: string, dispatch: Dispatch<AddFinishedAuction>, cb?: () => void) {
+export async function listenCloseAuction(
+  address: string,
+  dispatch: Dispatch<AddFinishedAuction | SetValueAction>,
+  cb?: () => void
+) {
   if (listenCloseAuctionFlag) return;
   listenCloseAuctionFlag = true;
 
@@ -212,6 +216,7 @@ export async function listenCloseAuction(address: string, dispatch: Dispatch<Add
       }
       clearInterval(interval);
       if (cb) cb();
+      setContractValue(EcontractValue.listBid, [], dispatch);
     }
   }, 1000);
 }
