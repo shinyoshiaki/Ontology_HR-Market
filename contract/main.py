@@ -46,6 +46,9 @@ def Main(operation, args):
 def RegisterPerson(personAddr, name, company):
     key = concat("person_", personAddr)
     val = makeValue([name, company], '$')
+    
+    person = {'name':name,'company':company}
+    Put(ctx,concat(key,'_map'),Serialize(person))
 
     Put(ctx, key, val)
 
@@ -85,8 +88,14 @@ def RegisterCompanyPerson(companyAddr, personAddr):
     curValList.append(personAddr)
     val = makeValue(curValList, '$')
     
+    # company address
+    person = Deserialize(Get(ctx,concatAll(['person_',personAddr,'_map'])))
+    person["company_address"] = companyAddr
+    Put(ctx,concatAll(['person_',personAddr,'_map']),Serialize(person))
+    
     Put(ctx, key, val)
     Put(ctx, keyM, Serialize(curValList))
+    Put(ctx,concat("person_", personAddr),companyAddr)
     return True
     
 def ReadCompany(companyAddr):
@@ -172,31 +181,23 @@ def ReadAuction(auctionAddr):
 def CloseAuction(personAddr):
     
     # get highest bid
-    bids = []
-    # get latest bid index
-    idx = Get(ctx, concat('latest_bid_index_', personAddr));
-    if idx <= 0 : 
-        return False
-    
-    i = 0 
-    while i < idx:
-        key = concat(concat('bid_', personAddr), i)
-        v = Get(ctx, key)
-        if v:
-            bids.append(v)
-    
-    highestBids = getHighestBid(bids)
+    highestBids = getHighestBid(personAddr)
 
     amount = highestBids['price']
     nextCompanyAddress = highestBids['company_address']
+    
+    Notify("amount")
+    Notify(amount)
+    Notify("nextCompanyAddress")
+    Notify(nextCompanyAddress)
 
     # check amount of next company address
 #    if amount > BalanceOf(nextCompanyAddress):
  #       return False
        
     # get current company address
-    personData = ReadPerson(personAddr)
-    currentCompanyAddress = personData['company']
+    personData = Deserialize(Get(ctx,concat("person_", personAddr)))
+    currentCompanyAddress = personData['company_address']
         
     # transfer
     transfer(nextCompanyAddress, currentCompanyAddress, amount)
@@ -208,13 +209,8 @@ def CloseAuction(personAddr):
     return True
 
 
-def getHighestBid(bids):
-    high = bids[0]
-    for bid in bids:
-        if bid["price"] > high['price']:
-            high = bid
-            
-    return high
+def getHighestBid(personAddr):
+    return Deserialize(Get(ctx, concat('highest_bid_',personAddr)))
     
 
 def transfer(fromacct, toacct, amount):
