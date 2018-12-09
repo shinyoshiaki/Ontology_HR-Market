@@ -251,7 +251,7 @@ def CloseAuction(personAddr):
     personData['company'] = company
     
 
-    Put(ctx,concatAll("person_", personAddr,'_map'), Serialize(person))
+    Put(ctx,concatAll(["person_", personAddr,'_map']), Serialize(personData))
     
     return True
 
