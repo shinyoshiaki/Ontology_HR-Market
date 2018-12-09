@@ -23,25 +23,37 @@ export default class FormBitWorkerMol extends React.Component<IformBitWorkerProp
   render() {
     return (
       <div style={this.props.style}>
-        <TextField
-          onChange={e => {
-            this.setState({ amount: parseInt(e.target.value, 10) });
-          }}
-          value={this.state.amount}
-          label="入札額"
-          type="number"
-        />
-        <Button
-          onClick={() => {
-            this.props.onformBitWorker(this.state.amount);
-            this.setState(initialState);
-          }}
+        <div
           style={{
-            verticalAlign: "bottom"
-          }}
-        >
-          bit
-        </Button>
+            minHeight:"300px",
+            height: "50%",
+          }}>
+          <div
+            style={{
+              verticalAlign:"middle",
+            }}
+          >
+            <TextField
+              onChange={e => {
+                this.setState({ amount: parseInt(e.target.value, 10) });
+              }}
+              value={this.state.amount}
+              label="入札額"
+              type="number"
+            />
+            <Button
+              onClick={() => {
+                this.props.onformBitWorker(this.state.amount);
+                this.setState(initialState);
+              }}
+              style={{
+                verticalAlign: "bottom"
+              }}
+            >
+              bit
+            </Button>
+          </div>
+        </div>
       </div>
     );
   }
