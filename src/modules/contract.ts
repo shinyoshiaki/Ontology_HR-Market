@@ -100,6 +100,7 @@ async function getPerson(address: string) {
 }
 
 let listenAllPersonsFlag = false;
+let listenAllPersonsLocal: HumanData[];
 export async function listenAllPersons(dispatch: Dispatch<SetValueAction>) {
   if (listenAllPersonsFlag) return undefined;
   listenAllPersonsFlag = true;
@@ -117,7 +118,9 @@ export async function listenAllPersons(dispatch: Dispatch<SetValueAction>) {
         humans.push(human);
       }
     }
-    setContractValue(EcontractValue.listResultSearchHumans, humans, dispatch);
+    if (!listenAllPersonsLocal || jsonStr(listenAllPersonsLocal) !== jsonStr(humans))
+      setContractValue(EcontractValue.listResultSearchHumans, humans, dispatch);
+    listenAllPersonsLocal = humans;
   }, 1000);
   return interval;
 }
@@ -207,11 +210,9 @@ export async function listenCloseAuction(
   const interval = setInterval(async () => {
     const result = await isAuctionClosed(address);
     if (result) {
-      console.log("debug is close", { result });
       const human = await getPerson(address);
       const price = await getHighestBid(address);
       if (human) {
-        console.log("closeauction", human, price);
         addFinishedAuction(human, price ? price : 0, dispatch);
       }
       clearInterval(interval);
@@ -270,6 +271,7 @@ export async function registerBid(address: string, companyAddress: string, price
 }
 
 let listenBidflag = false;
+let listBidLocal: Ibid[];
 export async function listenBid(address: string, dispatch: Dispatch<SetValueAction>) {
   if (listenBidflag) return;
   const closed = await isAuctionClosed(address);
@@ -293,8 +295,9 @@ export async function listenBid(address: string, dispatch: Dispatch<SetValueActi
       };
       return bid;
     });
-
-    setContractValue(EcontractValue.listBid, bids, dispatch);
+    if (!listBidLocal || jsonStr(listBidLocal) !== jsonStr(bids))
+      setContractValue(EcontractValue.listBid, bids, dispatch);
+    listBidLocal = bids;
   }, 1000);
   return interval;
 }
@@ -353,26 +356,31 @@ export async function registerCompanyPerson(personAddr: string, companyAddr: str
   }
 }
 
+export function jsonStr(obj: object) {
+  return JSON.stringify(obj, Object.keys(obj).sort());
+}
+
 let listenCompanyPersonFlag = false;
+let listWorkersLocal: HumanData[];
 export async function listenCompanyPerson(company: Company, dispatch: Dispatch<SetValueAction>) {
   if (listenCompanyPersonFlag) return;
   setInterval(async () => {
     listenCompanyPersonFlag = true;
     const address = "company_" + company.companyAddr + "_persons";
     const result = await rest.getStorage(codeHash, Buffer.from(address, "ascii").toString("hex")).catch(console.log);
-    console.log({ result });
     if (!result || !result.Result) return;
     const arr = Buffer.from(result.Result, "hex")
       .toString("ascii")
       .split("$");
-    console.log({ arr });
     const workers: HumanData[] = [];
     for (const pr of arr) {
       let human = await getPerson(pr);
       if (!human) human = { name: "未登録ユーザ", company: company.name, address: pr };
       workers.push(human);
     }
-    setContractValue(EcontractValue.listWorkers, workers, dispatch);
+    if (!listWorkersLocal || jsonStr(listWorkersLocal) !== jsonStr(workers))
+      setContractValue(EcontractValue.listWorkers, workers, dispatch);
+    listWorkersLocal = workers;
   }, 1000);
 }
 
