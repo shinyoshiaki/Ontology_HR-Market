@@ -4,19 +4,30 @@ import { ReduxState } from "src/createStore";
 import { Dispatch } from "redux";
 import MarketTemp from "../../components/templates/market";
 import { drawerList } from "./const";
-import { ContractState, existAuction, registerAuction, registerBid, listenBid } from "../../modules/contract";
+import {
+  ContractState,
+  existAuction,
+  registerAuction,
+  registerBid,
+  listenBid,
+  listenCloseAuction
+} from "../../modules/contract";
+import { Snackbar } from "@material-ui/core";
 
 interface Props extends ContractState {
   dispatch: Dispatch;
   history: any;
 }
 
-interface States {}
+interface States {
+  snackOpen: boolean;
+  snackMessage: string;
+}
 
 class Market extends React.Component<Props, States> {
   constructor(props: any) {
     super(props);
-    this.state = {};
+    this.state = { snackOpen: false, snackMessage: "" };
     this.init();
   }
 
@@ -26,11 +37,21 @@ class Market extends React.Component<Props, States> {
       const result = await existAuction(detailHuman.address);
       if (!result) {
         const success = await registerAuction(detailHuman.address);
-        if (success) listenBid(detailHuman.address, this.props.dispatch);
+        if (success) {
+          await this.listen(detailHuman.address);
+        }
       } else {
-        listenBid(detailHuman.address, this.props.dispatch);
+        await this.listen(detailHuman.address);
       }
     }
+  }
+
+  async listen(address: string) {
+    const interval = await listenBid(address, this.props.dispatch);
+    listenCloseAuction(address, () => {
+      if (interval) clearInterval(interval);
+      this.setState({ snackMessage: "auction closed", snackOpen: true });
+    });
   }
 
   onformBitWorker = async (num: number) => {
@@ -43,6 +64,14 @@ class Market extends React.Component<Props, States> {
     const { history, myAddress, detailHuman, listBid } = this.props;
     return (
       <div>
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={this.state.snackOpen}
+          onClose={() => {
+            this.setState({ snackOpen: false });
+          }}
+          message={this.state.snackMessage}
+        />
         <MarketTemp
           history={history}
           myAddress={myAddress ? myAddress : "error"}

@@ -132,7 +132,8 @@ export async function registerAuction(address: string) {
     new Parameter(abiFunction.parameters[0].getName(), ParameterType.String, address),
     new Parameter(abiFunction.parameters[1].getName(), ParameterType.String, human.company),
     new Parameter(abiFunction.parameters[2].getName(), ParameterType.String, Date.now().toString()),
-    new Parameter(abiFunction.parameters[3].getName(), ParameterType.String, (Date.now() + 1000 * 60).toString())
+    new Parameter(abiFunction.parameters[3].getName(), ParameterType.String, (Date.now() + 1000 * 10).toString())
+    // 30
   );
   const result = await onScCall({
     scriptHash: codeHash,
@@ -147,6 +148,36 @@ export async function registerAuction(address: string) {
   } else {
     return false;
   }
+}
+
+async function isAuctionClosed(address: string) {
+  const url = "auction_" + address;
+  const result = await rest.getStorage(codeHash, Buffer.from(url, "ascii").toString("hex")).catch(console.log);
+  if (!result || !result.Result) return;
+  const arr = Buffer.from(result.Result, "hex")
+    .toString("ascii")
+    .split("$");
+  const end = parseInt(arr[3], 10);
+  if (Date.now() > end) {
+    console.log("end auction");
+    return true;
+  } else {
+    return false;
+  }
+}
+
+let listenCloseAuctionFlag = false;
+export async function listenCloseAuction(address: string, cb?: () => void) {
+  if (listenCloseAuctionFlag) return;
+  listenCloseAuctionFlag = true;
+
+  const interval = setInterval(async () => {
+    const result = await isAuctionClosed(address);
+    if (result) {
+      clearInterval(interval);
+      if (cb) cb();
+    }
+  }, 1000);
 }
 
 export async function registerBid(address: string, companyAddress: string, price: number) {
@@ -174,7 +205,9 @@ export async function registerBid(address: string, companyAddress: string, price
 let listenBidflag = false;
 export async function listenBid(address: string, dispatch: Dispatch<SetValueAction>) {
   if (listenBidflag) return;
-  setInterval(async () => {
+  const closed = await isAuctionClosed(address);
+  if (closed) return;
+  const interval = setInterval(async () => {
     listenBidflag = true;
     let bids: Ibid[] = [];
     const url = "bids_" + address;
@@ -196,6 +229,7 @@ export async function listenBid(address: string, dispatch: Dispatch<SetValueActi
 
     setContractValue(EcontractValue.listBid, bids, dispatch);
   }, 1000);
+  return interval;
 }
 
 export async function existCompany(address: string, dispatch: Dispatch<SetValueAction>) {
