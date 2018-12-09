@@ -197,7 +197,7 @@ def CloseAuction(personAddr):
 
 
 def getHighestBid(personAddr):
-    return Get(ctx, concat('highest_bid_',personAddr)
+    return Get(ctx, concat('highest_bid_',personAddr))
     
 
 def transfer(fromacct, toacct, amount):
