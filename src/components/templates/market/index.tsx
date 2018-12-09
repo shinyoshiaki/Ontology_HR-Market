@@ -16,10 +16,10 @@ export default class MarketTemp extends React.Component<IMarketTempProps, {}> {
       <div>
         <HeaderOrg {...this.props} />
         <div style={{ display: "flex" }}>
-          <DetailWorkerMol {...this.props} style={{ flex: 1 }} />
-          <div style={{ display: "flex", flexDirection: "column", flex: 1, height: "90vh" }}>
+          <DetailWorkerMol {...this.props} style={{ width : "350px" }} />
+          <div style={{ display: "flex", flexDirection: "column", width : "calc(100% - 350px)", height: "90vh", justifyContent: "center" }}>
             <FormBitWorkerMol {...this.props} style={{ marginTop: "auto" }} />
-            <p>現在の入札金額</p>
+            <p style={{textAlign: "center"}}>現在の入札状況</p>
             <ListBidMol {...this.props} />
           </div>
         </div>

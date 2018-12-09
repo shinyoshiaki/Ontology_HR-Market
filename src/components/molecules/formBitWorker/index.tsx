@@ -1,5 +1,6 @@
 import * as React from "react";
 import { TextField, Button } from "@material-ui/core";
+import manImage from'../../../../public/img/man.jpg';
 
 export interface IformBitWorkerProps {
   onformBitWorker: (v?: number) => void;
@@ -25,14 +26,28 @@ export default class FormBitWorkerMol extends React.Component<IformBitWorkerProp
       <div style={this.props.style}>
         <div
           style={{
+            display: "flex",
+            justifyContent: "center",
             minHeight:"300px",
             height: "50%",
+            width: "100%"
           }}>
           <div
             style={{
-              verticalAlign:"middle",
+              margin:"auto",
+              display: "inline-block",
+              height: "100%",
             }}
-          >
+          > 
+            <div
+              style={{display: "block", textAlign: "center"}}
+            >
+              <img src={manImage}
+                style={{
+                  height: "150px",
+                }}
+              />
+            </div>
             <TextField
               onChange={e => {
                 this.setState({ amount: parseInt(e.target.value, 10) });
@@ -50,7 +65,7 @@ export default class FormBitWorkerMol extends React.Component<IformBitWorkerProp
                 verticalAlign: "bottom"
               }}
             >
-              bit
+              Bid
             </Button>
           </div>
         </div>
