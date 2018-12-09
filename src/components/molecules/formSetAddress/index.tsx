@@ -49,7 +49,7 @@ export default class FormSetAddress extends React.Component<
             }
           }}
         >
-          open
+          開く
         </Button>
         {this.state.showAddress}
       </div>

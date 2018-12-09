@@ -14,12 +14,9 @@ export interface IlistBidProps {
 export interface IlistBidState {}
 
 export default class ListBidMol extends React.Component<IlistBidProps, IlistBidState> {
-  url?: string;
   constructor(props: IlistBidProps) {
     super(props);
-    this.state = {
-      url: undefined
-    };
+    this.state = {};
   }
 
   private renderComment(bid: Ibid, i: number) {

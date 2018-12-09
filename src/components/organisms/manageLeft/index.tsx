@@ -32,7 +32,7 @@ export default class ManageLeftOrg extends React.Component<ImanageLeftOrgProps, 
     const { companyInfo } = this.props;
     return (
       <div style={this.props.style}>
-        株式会社 {companyInfo ? companyInfo.name : "未登録"}
+        株式会社 {companyInfo ? companyInfo.name : "未選択"}
         <div style={{ display: "flex", minHeight: "90vh", flexDirection: "column" }}>
           <div style={{ flex: 1 }}>
             <FormSetAddress {...this.props} />
