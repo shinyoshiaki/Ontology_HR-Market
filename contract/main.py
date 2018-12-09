@@ -46,14 +46,25 @@ def Main(operation, args):
 def RegisterPerson(personAddr, name, company):
     key = concat("person_", personAddr)
     val = makeValue([name, company], '$')
-    
+
     person = {'name':name,'company':company}
-    Put(ctx,concat(key,'_map'),Serialize(person))
+    Put(ctx,concat(key,'_map'), Serialize(person))
 
     Put(ctx, key, val)
 
+    # create persons list
+    personsList = Get(ctx, 'persons_list')
+    if personsList is not None:
+        personsList = Deserialize(personsList)
+    else:
+        personsList = []
+    personsList.append(personAddr)
+    personsStr = makeValue(personsList, '$')
+    Put(ctx, 'persons_list', Serialize(personsList))
+    Put(ctx, 'persons', personsStr)
+
     return True
-    
+   
 def ReadPerson(personAddr):
     key = concat("person_", personAddr)
     v = Get(ctx, key)
@@ -67,9 +78,20 @@ def ReadPerson(personAddr):
 def RegisterCompany(companyAddr, name):
     key = concat('company_', companyAddr)
     Put(ctx, key, name)
-    
+
+    # create companies list
+    cList = Get(ctx, 'companies_list')
+    if cList is not None:
+        cList = Deserialize(cList)
+    else:
+        cList = []
+    cList.append(companyAddr)
+    cStr = makeValue(cList, '$')
+    Put(ctx, 'companies_list', Serialize(cList))
+    Put(ctx, 'companies', cStr)
+
     return True
-    
+   
 def RegisterCompanyPerson(companyAddr, personAddr):
     key = concatAll(['company_', companyAddr, '_persons'])
     Notify(key)
@@ -148,16 +170,21 @@ def RegisterBid(personAddr, companyAddr, price):
             'company_address': companyAddr,
             'price': price
         }
+    hKey = concat('highest_bid_', personAddr)
+    hMapKey = concat(hKey, '_map')
     if (len(bidsList) == 0):
-        Put(ctx, concat('highest_bid_', personAddr), Serialize(curBid))
+        Put(ctx, hKey, bidStr)
+        Put(ctx, hMapKey, Serialize(curBid))
     else:
-        highestBid = Get(ctx, concat('highest_bid_', personAddr))
+        highestBid = Get(ctx, hMapKey)
         if highestBid is not None:
             highestBid = Deserialize(highestBid)
             if highestBid['price'] <= price:
-                Put(ctx, concat('highest_bid_', personAddr), Serialize(curBid))
+                Put(ctx, hKey, bidStr)
+                Put(ctx, hMapKey, Serialize(curBid))
         else:
-            Put(ctx, concat('highest_bid_', personAddr), Serialize(curBid))
+            Put(ctx, hKey, bidStr)
+            Put(ctx, hMapKey, Serialize(curBid))
     
     return True
 
@@ -210,7 +237,7 @@ def CloseAuction(personAddr):
 
 
 def getHighestBid(personAddr):
-    return Deserialize(Get(ctx, concat('highest_bid_',personAddr)))
+    return Deserialize(Get(ctx, concatAll(['highest_bid_', personAddr, '_map'])))
     
 
 def transfer(fromacct, toacct, amount):
