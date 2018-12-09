@@ -20,6 +20,11 @@ interface HumanDatas {
   datas: HumanData[];
 }
 
+export interface ResultAuction {
+  human: HumanData;
+  price: number;
+}
+
 export interface Ibid {
   personAddr: string;
   companyAddr: string;

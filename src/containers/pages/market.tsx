@@ -48,7 +48,7 @@ class Market extends React.Component<Props, States> {
 
   async listen(address: string) {
     const interval = await listenBid(address, this.props.dispatch);
-    listenCloseAuction(address, () => {
+    listenCloseAuction(address, this.props.dispatch, () => {
       if (interval) clearInterval(interval);
       this.setState({ snackMessage: "auction closed", snackOpen: true });
     });

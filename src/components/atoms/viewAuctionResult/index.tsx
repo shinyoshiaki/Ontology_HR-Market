@@ -1,10 +1,10 @@
 import * as React from "react";
 import { Button } from "@material-ui/core";
-import { HumanData } from "../../../interface";
+import { ResultAuction } from '../../../interface';
 
 export interface IviewAuctionResultProps {
-  resultHuman?: HumanData;
-  onViewAuctionResult: (resultHuman: HumanData) => void;
+  resultAuction?: ResultAuction;
+  onViewAuctionResult: (resultHuman: ResultAuction) => void;
 }
 
 export default class ViewAuctionResult extends React.Component<IviewAuctionResultProps, {}> {
@@ -12,20 +12,20 @@ export default class ViewAuctionResult extends React.Component<IviewAuctionResul
     super(props);
   }
 
-  renderView(human: HumanData) {
-    return human.name;
+  renderView(human:ResultAuction) {
+    return `${human.human.name}　${human.price}`;
   }
 
   public render() {
-    const { resultHuman, onViewAuctionResult } = this.props;
+    const { resultAuction, onViewAuctionResult } = this.props;
     return (
       <div>
         <Button
           onClick={() => {
-            if (resultHuman) onViewAuctionResult(resultHuman);
+            if (resultAuction) onViewAuctionResult(resultAuction);
           }}
         >
-          {resultHuman ? this.renderView(resultHuman) : undefined}
+          {resultAuction ? this.renderView(resultAuction) : undefined}
         </Button>
       </div>
     );

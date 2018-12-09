@@ -2,7 +2,7 @@ import { AbiInfo, Parameter, ParameterType, RestClient } from "ontology-ts-sdk";
 import * as json from "./helloworld.abi.json";
 import { Dispatch, Action } from "redux";
 import { client } from "ontology-dapi";
-import { HumanData, Ibid, makeHumanDatasMock, Company } from "../interface";
+import { HumanData, Ibid, Company, ResultAuction } from "../interface";
 import { onScCall } from "../domain/index";
 
 const rest = new RestClient("http://polaris1.ont.io:20334");
@@ -16,7 +16,7 @@ export interface ContractState {
   companyInfo?: Company;
   listWorkers: HumanData[];
   listResultSearchHumans: HumanData[];
-  listResultAuction: HumanData[];
+  listResultAuction: ResultAuction[];
   detailHuman?: HumanData;
   listBid: Ibid[];
 }
@@ -27,13 +27,14 @@ const initialState: ContractState = {
   companyInfo: undefined,
   listWorkers: [],
   listResultSearchHumans: [],
-  listResultAuction: makeHumanDatasMock().datas,
+  listResultAuction: [],
   detailHuman: undefined,
   listBid: []
 };
 
 enum ActionNames {
-  SET_VALUE = "contract/set_value"
+  SET_VALUE = "contract/set_value",
+  Add_FINISHEDAUCTION = "contract/add_finishedauction"
 }
 
 export enum EcontractValue {
@@ -54,6 +55,16 @@ interface SetValueAction extends Action {
 
 export function setContractValue(key: EcontractValue, value: any, dispatch: Dispatch<SetValueAction>) {
   dispatch({ type: ActionNames.SET_VALUE, key, value });
+}
+
+interface AddFinishedAuction extends Action {
+  type: ActionNames.Add_FINISHEDAUCTION;
+  human: HumanData;
+  price: number;
+}
+
+export function addFinishedAuction(human: HumanData, price: number, dispatch: Dispatch<AddFinishedAuction>) {
+  dispatch({ type: ActionNames.Add_FINISHEDAUCTION, human, price });
 }
 
 export async function setMyAddress(dispatch: Dispatch<SetValueAction>) {
@@ -88,10 +99,6 @@ async function getPerson(address: string) {
   }
 }
 
-// export async function SearchPerson(address: string, dispatch: Dispatch<SetValueAction>) {
-//   const human = await getPerson(address);
-//   setContractValue(EcontractValue.listResultSearchHumans, [human], dispatch);
-// }
 let listenAllPersonsFlag = false;
 export async function listenAllPersons(dispatch: Dispatch<SetValueAction>) {
   if (listenAllPersonsFlag) return undefined;
@@ -154,7 +161,7 @@ export async function registerAuction(address: string) {
     new Parameter(abiFunction.parameters[0].getName(), ParameterType.String, address),
     new Parameter(abiFunction.parameters[1].getName(), ParameterType.String, human.company),
     new Parameter(abiFunction.parameters[2].getName(), ParameterType.String, Date.now().toString()),
-    new Parameter(abiFunction.parameters[3].getName(), ParameterType.String, (Date.now() + 1000 * 10).toString())
+    new Parameter(abiFunction.parameters[3].getName(), ParameterType.String, (Date.now() + 1000 * 40).toString())
     // 30
   );
   const result = await onScCall({
@@ -189,20 +196,38 @@ async function isAuctionClosed(address: string) {
 }
 
 let listenCloseAuctionFlag = false;
-export async function listenCloseAuction(address: string, cb?: () => void) {
+export async function listenCloseAuction(address: string, dispatch: Dispatch<AddFinishedAuction>, cb?: () => void) {
   if (listenCloseAuctionFlag) return;
   listenCloseAuctionFlag = true;
 
   const interval = setInterval(async () => {
     const result = await isAuctionClosed(address);
     if (result) {
+      console.log("debug is close", { result });
+      const human = await getPerson(address);
+      const price = await getHighestBid(address);
+      if (human) {
+        console.log("closeauction", human, price);
+        addFinishedAuction(human, price ? price : 0, dispatch);
+      }
       clearInterval(interval);
       if (cb) cb();
     }
   }, 1000);
 }
 
+async function getHighestBid(address: string) {
+  const url = "highest_bid" + address;
+  const result = await rest.getStorage(codeHash, Buffer.from(url, "ascii").toString("hex")).catch(console.log);
+  if (!result || !result.Result) return;
+  const num = parseInt(Buffer.from(result.Result, "hex").toString("ascii"), 10);
+  return num;
+}
+
 export async function finishAuction(address: string) {
+  const human = await getPerson(address);
+  const price = await getHighestBid(address);
+  if (!human || !price) return;
   const abiFunction = abiInfo.getFunction("CloseAuction");
   abiFunction.setParamsValue(new Parameter(abiFunction.parameters[0].getName(), ParameterType.String, address));
   const result = await onScCall({
@@ -346,12 +371,17 @@ export async function listenCompanyPerson(company: Company, dispatch: Dispatch<S
   }, 1000);
 }
 
-type ContractActions = SetValueAction;
+type ContractActions = SetValueAction | AddFinishedAuction;
 
 export default function reducer(state = initialState, action: ContractActions) {
   switch (action.type) {
     case ActionNames.SET_VALUE:
       return { ...state, [action.key]: action.value };
+    case ActionNames.Add_FINISHEDAUCTION:
+      return {
+        ...state,
+        listResultAuction: state.listResultAuction.concat({ human: action.human, price: action.price })
+      };
     default:
       return state;
   }
