@@ -1,5 +1,5 @@
 {
-  "hash": "0x51c03cec855e5e9f616890f7a0801d0bf5b101c8",
+  "hash": "0x48194ea063aa29a791baf35e7281778ef9f42d7b",
   "entrypoint": "Main",
   "functions": [
     {
@@ -14,20 +14,20 @@
         { "name": "name", "type": "String" },
         { "name": "company", "type": "String" }
       ],
-      "returntype": "Boolean"
+      "returntype": ""
     },
-    { "name": "ReadPerson", "parameters": [{ "name": "personAddr", "type": "" }], "returntype": "" },
+    { "name": "ReadPerson", "parameters": [{ "name": "personAddr", "type": "String" }], "returntype": "" },
     {
       "name": "RegisterCompany",
-      "parameters": [{ "name": "companyAddr", "type": "" }, { "name": "name", "type": "" }],
+      "parameters": [{ "name": "companyAddr", "type": "String" }, { "name": "name", "type": "String" }],
       "returntype": ""
     },
     {
       "name": "RegisterCompanyPerson",
-      "parameters": [{ "name": "companyAddr", "type": "" }, { "name": "personAddr", "type": "" }],
+      "parameters": [{ "name": "companyAddr", "type": "String" }, { "name": "personAddr", "type": "String" }],
       "returntype": ""
     },
-    { "name": "ReadCompany", "parameters": [{ "name": "companyAddr", "type": "" }], "returntype": "" },
+    { "name": "ReadCompany", "parameters": [{ "name": "companyAddr", "type": "String" }], "returntype": "" },
     {
       "name": "RegisterAuction",
       "parameters": [
@@ -36,7 +36,7 @@
         { "name": "start", "type": "String" },
         { "name": "end", "type": "String" }
       ],
-      "returntype": "Boolean"
+      "returntype": ""
     },
     {
       "name": "RegisterBid",
@@ -45,10 +45,35 @@
         { "name": "companyAddr", "type": "String" },
         { "name": "price", "type": "String" }
       ],
-      "returntype": "Boolean"
+      "returntype": ""
     },
-    { "name": "ReadBids", "parameters": [{ "name": "personAddr", "type": "" }], "returntype": "" },
-    { "name": "concatAll", "parameters": [{ "name": "values", "type": "" }], "returntype": "" },
-    { "name": "makeValue", "parameters": [{ "name": "values", "type": "" }], "returntype": "" }
+    { "name": "ReadBids", "parameters": [{ "name": "auctionAddr", "type": "String" }], "returntype": "" },
+    { "name": "ReadAuction", "parameters": [{ "name": "auctionAddr", "type": "String" }], "returntype": "" },
+    { "name": "CloseAuction", "parameters": [{ "name": "personAddr", "type": "String" }], "returntype": "" },
+    { "name": "getHighestBid", "parameters": [{ "name": "bids", "type": "String" }], "returntype": "" },
+    {
+      "name": "transfer",
+      "parameters": [
+        { "name": "fromacct", "type": "String" },
+        { "name": "toacct", "type": "String" },
+        { "name": "amount", "type": "String" }
+      ],
+      "returntype": ""
+    },
+    {
+      "name": "makeState",
+      "parameters": [
+        { "name": "fromacct", "type": "String" },
+        { "name": "toacct", "type": "String" },
+        { "name": "amount", "type": "String" }
+      ],
+      "returntype": ""
+    },
+    { "name": "concatAll", "parameters": [{ "name": "values", "type": "String" }], "returntype": "" },
+    {
+      "name": "makeValue",
+      "parameters": [{ "name": "values", "type": "String" }, { "name": "divider", "type": "String" }],
+      "returntype": ""
+    }
   ]
 }

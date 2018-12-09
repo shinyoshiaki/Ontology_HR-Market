@@ -2,7 +2,7 @@ import { AbiInfo, Parameter, ParameterType, RestClient } from "ontology-ts-sdk";
 import * as json from "./helloworld.abi.json";
 import { Dispatch, Action } from "redux";
 import { client } from "ontology-dapi";
-import { HumanData, Ibid, makeHumanDatasMock } from "../interface";
+import { HumanData, Ibid, makeHumanDatasMock, Company } from "../interface";
 import { onScCall } from "../domain/index";
 
 const rest = new RestClient("http://polaris1.ont.io:20334");
@@ -13,6 +13,7 @@ console.log({ codeHash });
 export interface ContractState {
   userInfo?: HumanData;
   myAddress?: string;
+  companyInfo?: Company;
   listWorkers: HumanData[];
   listResultSearchHumans: HumanData[];
   listResultAuction: HumanData[];
@@ -23,7 +24,8 @@ export interface ContractState {
 const initialState: ContractState = {
   userInfo: undefined,
   myAddress: undefined,
-  listWorkers: makeHumanDatasMock().datas,
+  companyInfo: undefined,
+  listWorkers: [],
   listResultSearchHumans: [],
   listResultAuction: makeHumanDatasMock().datas,
   detailHuman: undefined,
@@ -40,7 +42,8 @@ export enum EcontractValue {
   detailHuman = "detailHuman",
   userInfo = "userInfo",
   listResultSearchHumans = "listResultSearchHumans",
-  listBid = "listBid"
+  listBid = "listBid",
+  companyInfo = "companyInfo"
 }
 
 interface SetValueAction extends Action {
@@ -140,11 +143,14 @@ export async function registerAuction(address: string) {
   }).catch(console.log);
   if (result) {
     console.log("success", result);
+    return true;
+  } else {
+    return false;
   }
 }
 
 export async function registerBid(address: string, companyAddress: string, price: number) {
-  console.log("registerAuction");
+  console.log("registerBid");
   const abiFunction = abiInfo.getFunction("RegisterBid");
   const human = await getPerson(address);
   if (!human) return;
@@ -165,62 +171,106 @@ export async function registerBid(address: string, companyAddress: string, price
   }
 }
 
+let listenBidflag = false;
 export async function listenBid(address: string, dispatch: Dispatch<SetValueAction>) {
+  if (listenBidflag) return;
   setInterval(async () => {
-    const bids: Ibid[] = [];
-    const result = await rest
-      .getStorage(codeHash, Buffer.from("latest_bid_index_" + address, "ascii").toString("hex"))
-      .catch(console.log);
-    console.log({ result });
-    if (!result.Result) return;
-    const idx = parseInt(result.Result, 10);
-    for (let i = 0; i < idx + 1; i++) {
-      const raw = await rest
-        .getStorage(codeHash, Buffer.from("bid_$" + address + "$_" + i, "ascii").toString("hex"))
-        .catch(console.log);
-      console.log({ raw });
-      if (raw.Result) {
-        const arr = Buffer.from(raw.Result, "hex")
-          .toString("ascii")
-          .split("$");
-        console.log({ arr });
-        const bid: Ibid = {
-          personAddr: address,
-          companyAddr: arr[0],
-          price: parseInt(arr[1], 10),
-          now: Date.now().toString()
-        };
-        bids.push(bid);
-      }
-    }
+    listenBidflag = true;
+    let bids: Ibid[] = [];
+    const url = "bids_" + address;
+    const result = await rest.getStorage(codeHash, Buffer.from(url, "ascii").toString("hex")).catch(console.log);
+    if (!result || !result.Result) return;
+    const bidsArr = Buffer.from(result.Result, "hex")
+      .toString("ascii")
+      .split("#");
+    bids = bidsArr.map(bidRaw => {
+      const bidArr = bidRaw.split("$");
+      const bid: Ibid = {
+        personAddr: address,
+        companyAddr: bidArr[0],
+        price: parseInt(bidArr[1], 10),
+        now: Date.now().toString()
+      };
+      return bid;
+    });
+
     setContractValue(EcontractValue.listBid, bids, dispatch);
   }, 1000);
 }
 
-export async function addWorker(human: HumanData) {
-  console.log("addworker", { human });
-  const abiFunction = abiInfo.getFunction("RegisterPerson");
+export async function existCompany(address: string, dispatch: Dispatch<SetValueAction>) {
+  const url = "company_" + address;
+  const result = await rest.getStorage(codeHash, Buffer.from(url, "ascii").toString("hex")).catch(console.log);
+  if (result.Result && result.Result.length > 0) {
+    console.log("company exist", result);
+    const name = Buffer.from(result.Result, "hex").toString("ascii");
+    setContractValue(EcontractValue.companyInfo, { companyAddr: address, name } as Company, dispatch);
+    return name;
+  } else {
+    return false;
+  }
+}
+
+export async function registerCompany(company: Company, dispatch: Dispatch<SetValueAction>) {
+  console.log("RegisterCompany");
+  const abiFunction = abiInfo.getFunction("RegisterCompany");
 
   abiFunction.setParamsValue(
-    new Parameter(abiFunction.parameters[0].getName(), ParameterType.String, human.name),
-    new Parameter(abiFunction.parameters[1].getName(), ParameterType.String, human.company)
+    new Parameter(abiFunction.parameters[0].getName(), ParameterType.String, company.companyAddr),
+    new Parameter(abiFunction.parameters[1].getName(), ParameterType.String, company.name)
   );
-
-  await onScCall({
+  const result = await onScCall({
     scriptHash: codeHash,
     operation: abiFunction.name,
     args: abiFunction.parameters,
     gasLimit: 20000,
     gasPrice: 500
   }).catch(console.log);
+  if (result) {
+    console.log("success", result);
+    setContractValue(EcontractValue.companyInfo, company, dispatch);
+    return true;
+  } else return false;
 }
 
-export async function listenWorkers(companyName: string, dispatch: Dispatch<SetValueAction>) {
+export async function registerCompanyPerson(personAddr: string, companyAddr: string) {
+  console.log("RegisterCompanyPerson");
+  const abiFunction = abiInfo.getFunction("RegisterCompanyPerson");
+  abiFunction.setParamsValue(
+    new Parameter(abiFunction.parameters[0].getName(), ParameterType.String, companyAddr),
+    new Parameter(abiFunction.parameters[1].getName(), ParameterType.String, personAddr)
+  );
+  const result = await onScCall({
+    scriptHash: codeHash,
+    operation: abiFunction.name,
+    args: abiFunction.parameters,
+    gasLimit: 20000,
+    gasPrice: 500
+  }).catch(console.log);
+  if (result) {
+    console.log("success", result);
+  }
+}
+
+let listenCompanyPersonFlag = false;
+export async function listenCompanyPerson(company: Company, dispatch: Dispatch<SetValueAction>) {
+  if (listenCompanyPersonFlag) return;
   setInterval(async () => {
-    const address = companyName;
-    const result = await rest.getStorage(codeHash, address).catch(console.log);
+    listenCompanyPersonFlag = true;
+    const address = "company_" + company.companyAddr + "_persons";
+    const result = await rest.getStorage(codeHash, Buffer.from(address, "ascii").toString("hex")).catch(console.log);
     console.log({ result });
+    if (!result || !result.Result) return;
+    const arr = Buffer.from(result.Result, "hex")
+      .toString("ascii")
+      .split("$");
+    console.log({ arr });
     const workers: HumanData[] = [];
+    for (const pr of arr) {
+      let human = await getPerson(pr);
+      if (!human) human = { name: "未登録ユーザ", company: company.name, address: pr };
+      workers.push(human);
+    }
     setContractValue(EcontractValue.listWorkers, workers, dispatch);
   }, 1000);
 }

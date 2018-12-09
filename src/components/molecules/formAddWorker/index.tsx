@@ -1,12 +1,12 @@
 import * as React from "react";
 import { TextField, Button } from "@material-ui/core";
-import { HumanData, makeHumanDataMock } from "../../../interface";
+import { HumanData } from "../../../interface";
 
 export interface IformAddWorkerProps {
   onformAddWorker: (v: HumanData) => void;
 }
 
-const initialState: HumanData = makeHumanDataMock();
+const initialState: HumanData = { address: "", name: "", company: "" };
 
 export default class FormAddWorkerMol extends React.Component<IformAddWorkerProps, HumanData> {
   constructor(props: IformAddWorkerProps) {
@@ -28,52 +28,22 @@ export default class FormAddWorkerMol extends React.Component<IformAddWorkerProp
       >
         <TextField
           onChange={e => {
+            this.setState({ address: e.target.value });
+          }}
+          value={this.state.mail}
+          label="address"
+        />
+        <br />
+        <TextField
+          onChange={e => {
             this.setState({ name: e.target.value });
           }}
           value={this.state.name}
           label="name"
         />
+
         <br />
-        <TextField
-          onChange={e => {
-            this.setState({ age: parseInt(e.target.value, 10) });
-          }}
-          value={this.state.age}
-          label="age"
-        />
-        <br />
-        <TextField
-          onChange={e => {
-            this.setState({ gender: parseInt(e.target.value, 10) });
-          }}
-          value={this.state.gender}
-          label="gender"
-        />
-        <br />
-        <TextField
-          onChange={e => {
-            this.setState({ company: e.target.value });
-          }}
-          value={this.state.company}
-          label="company"
-        />
-        <br />
-        <TextField
-          onChange={e => {
-            this.setState({ mail: e.target.value });
-          }}
-          value={this.state.mail}
-          label="mail"
-        />
-        <br />
-        <TextField
-          onChange={e => {
-            this.setState({ memo: e.target.value });
-          }}
-          value={this.state.memo}
-          label="memo"
-        />
-        <br />
+
         <Button
           onClick={() => {
             this.props.onformAddWorker(this.state);

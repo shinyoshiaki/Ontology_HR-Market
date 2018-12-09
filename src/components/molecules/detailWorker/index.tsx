@@ -19,6 +19,8 @@ export default class DetailWorkerMol extends React.Component<IdetailWorkerProps,
         name　{human.name}
         <br />
         company　{human.company}
+        <br />
+        address　{human.address}
       </div>
     );
   }

@@ -31,6 +31,11 @@ export interface IlistBidProps {
   listBid: Ibid[];
 }
 
+export interface Company {
+  companyAddr: string;
+  name: string;
+}
+
 export const makeJobDataMock = (payload: { [key in keyof JobData]?: JobData[key] } = {}): JobData => {
   return Object.assign(
     {},

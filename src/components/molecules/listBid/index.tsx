@@ -28,8 +28,7 @@ export default class ListBidMol extends React.Component<IlistBidProps, IlistBidS
 
   render() {
     const { listBid } = this.props;
-    return (
-      <div style={{ overflow: "scroll" }}>{listBid ? listBid.map((v, i) => this.renderComment(v, i)) : undefined}</div>
-    );
+    listBid.sort((a: Ibid, b: Ibid) => a.price - b.price).reverse();
+    return <div style={{ overflow: "scroll" }}>{listBid.map((v, i) => this.renderComment(v, i))}</div>;
   }
 }

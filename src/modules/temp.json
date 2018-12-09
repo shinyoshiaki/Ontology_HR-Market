@@ -1,5 +1,5 @@
 {
-  "contractHash": "51c03cec855e5e9f616890f7a0801d0bf5b101c8",
+  "contractHash": "48194ea063aa29a791baf35e7281778ef9f42d7b",
   "abi": {
     "functions": [
       {
@@ -47,9 +47,34 @@
         ],
         "returntype": ""
       },
-      { "name": "ReadBids", "parameters": [{ "name": "personAddr", "type": "" }], "returntype": "" },
+      { "name": "ReadBids", "parameters": [{ "name": "auctionAddr", "type": "" }], "returntype": "" },
+      { "name": "ReadAuction", "parameters": [{ "name": "auctionAddr", "type": "" }], "returntype": "" },
+      { "name": "CloseAuction", "parameters": [{ "name": "personAddr", "type": "" }], "returntype": "" },
+      { "name": "getHighestBid", "parameters": [{ "name": "bids", "type": "" }], "returntype": "" },
+      {
+        "name": "transfer",
+        "parameters": [
+          { "name": "fromacct", "type": "" },
+          { "name": "toacct", "type": "" },
+          { "name": "amount", "type": "" }
+        ],
+        "returntype": ""
+      },
+      {
+        "name": "makeState",
+        "parameters": [
+          { "name": "fromacct", "type": "" },
+          { "name": "toacct", "type": "" },
+          { "name": "amount", "type": "" }
+        ],
+        "returntype": ""
+      },
       { "name": "concatAll", "parameters": [{ "name": "values", "type": "" }], "returntype": "" },
-      { "name": "makeValue", "parameters": [{ "name": "values", "type": "" }], "returntype": "" }
+      {
+        "name": "makeValue",
+        "parameters": [{ "name": "values", "type": "" }, { "name": "divider", "type": "" }],
+        "returntype": ""
+      }
     ]
   }
 }

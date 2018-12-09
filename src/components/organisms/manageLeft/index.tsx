@@ -3,8 +3,10 @@ import ListWorkerMol, { IlistWorkerProps } from "../../molecules/listWorkers";
 import { Button, Modal } from "@material-ui/core";
 import FormAddWorkerMol, { IformAddWorkerProps } from "../../molecules/formAddWorker";
 import FormSetAddress, { IformSetAddressProps } from "../../molecules/formSetAddress";
+import { Company } from "../../../interface";
 
 export interface ImanageLeftOrgProps extends IlistWorkerProps, IformAddWorkerProps, IformSetAddressProps {
+  companyInfo?: Company;
   style?: React.CSSProperties;
 }
 
@@ -27,8 +29,10 @@ export default class ManageLeftOrg extends React.Component<ImanageLeftOrgProps, 
   };
 
   public render() {
+    const { companyInfo } = this.props;
     return (
       <div style={this.props.style}>
+        株式会社 {companyInfo ? companyInfo.name : "未登録"}
         <div style={{ display: "flex", minHeight: "90vh", flexDirection: "column" }}>
           <div style={{ flex: 1 }}>
             <FormSetAddress {...this.props} />

@@ -25,7 +25,8 @@ class Market extends React.Component<Props, States> {
     if (detailHuman) {
       const result = await existAuction(detailHuman.address);
       if (!result) {
-        await registerAuction(detailHuman.address);
+        const success = await registerAuction(detailHuman.address);
+        if (success) listenBid(detailHuman.address, this.props.dispatch);
       } else {
         listenBid(detailHuman.address, this.props.dispatch);
       }
