@@ -3,10 +3,10 @@ from boa.interop.System.Runtime import Notify, Serialize, Deserialize, GetTime, 
 from boa.builtins import concat
 from boa.interop.Ontology.Native import Invoke
 
-MESIToken = RegisterAppCall('d92a87ee43c7dd227b327c06d0f1ba1555d1a4d3', 'operation', 'args')
+# MESIToken = RegisterAppCall('d92a87ee43c7dd227b327c06d0f1ba1555d1a4d3', 'operation', 'args')
 
 ctx = GetContext()
-contractAddress = bytearray(b'\xd3\xa4\xd1\x55\x15\xba\xf1\xd0\x06\x7c\x32\x7b\x22\xdd\xc7\x43\xee\x87\x2a\xd9')
+# contractAddress = bytearray(b'\xd3\xa4\xd1\x55\x15\xba\xf1\xd0\x06\x7c\x32\x7b\x22\xdd\xc7\x43\xee\x87\x2a\xd9')
 
 
 NAME = 'MESItoken'
@@ -71,8 +71,6 @@ def Main(operation, args):
             to_acct = args[1]
             amount = args[2]
             return transfer(from_acct, to_acct, amount)
-    if operation == 'transferMulti':
-        return TransferMulti(args)
     if operation == 'approve':
         if len(args) != 3:
             return False
@@ -80,14 +78,6 @@ def Main(operation, args):
         spender = args[1]
         amount = args[2]
         return Approve(owner, spender, amount)
-    if operation == 'transferFrom':
-        if len(args) != 4:
-            return False
-        spender = args[0]
-        from_acct = args[1]
-        to_acct = args[2]
-        amount = args[3]
-        return TransferFrom(spender, from_acct, to_acct, amount)
     if operation == 'balanceOf':
         if len(args) != 1:
             return False
@@ -267,7 +257,7 @@ def CloseAuction(personAddr):
        
     # change company
     personData['company'] = nextCompanyAddress
-    RegisterPerson(personAddr, personData)
+    # RegisterPerson(personAddr, personData)
     
     return True
 
@@ -355,15 +345,6 @@ def transfer(from_acct, to_acct, amount):
     return True
 
 
-def TransferMulti(args):
-    for p in (args):
-        if len(p) != 3:
-            return False
-        if transfer(p[0], p[1], p[2]) == False:
-            # return False #  wrong since the previous transaction will be successful
-            raise Exception("TransferMulti failed.")
-    return True
-
 
 def Approve(owner, spender, amount):
     if amount < 0:
@@ -375,39 +356,6 @@ def Approve(owner, spender, amount):
     key = concat(concat(APPROVE_PREFIX, owner), spender)
     Put(ctx, key, amount)
     Notify(['approve', owner, spender, amount])
-    return True
-
-
-def TransferFrom(sender, from_acct, to_acct, amount):
-    if amount < 0:
-        return False
-    if CheckWitness(sender) == False:
-        return False
-    if len(to_acct) != 20:
-        return False
-    appoveKey = concat(concat(APPROVE_PREFIX, from_acct), sender)
-    approvedAmount = Get(ctx, appoveKey)
-    if approvedAmount < amount:
-        return False
-    if approvedAmount == amount:
-        Delete(ctx, appoveKey)
-    else:
-        Put(ctx, appoveKey, approvedAmount - amount)
-
-    fromKey = concat(TRANSFER_PREFIX, from_acct)
-    fromBalance = Get(ctx, fromKey)
-    if fromBalance < amount:
-        return False
-    if fromBalance == amount:
-        Delete(ctx, fromKey)
-    else:
-        Put(ctx, fromKey, fromBalance - amount)
-
-    tokey = concat(TRANSFER_PREFIX, to_acct)
-    toBalance = Get(ctx, tokey)
-
-    Put(ctx, tokey, toBalance + amount)
-    Notify(['transfer', from_acct, to_acct, amount])
     return True
 
 
