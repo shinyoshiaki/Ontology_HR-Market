@@ -134,6 +134,22 @@ def RegisterBid(personAddr, companyAddr, price):
     Put(ctx, bidsStrKey, bidsStr)
     Put(ctx, bidsListKey, Serialize(bidsList))
     
+    # register highest bid
+    curBid = {
+            'company_address': companyAddr,
+            'price': price
+        }
+    if (len(bidsList) == 0):
+        Put(ctx, concat('highest_bid_', personAddr), Serialize(curBid))
+    else:
+        highestBid = Get(ctx, concat('highest_bid_', personAddr))
+        if highestBid is not None:
+            highestBid = Deserialize(highestBid)
+            if highestBid['price'] <= price:
+                Put(ctx, concat('highest_bid_', personAddr), Serialize(curBid))
+        else:
+            Put(ctx, concat('highest_bid_', personAddr), Serialize(curBid))
+    
     return True
 
 def ReadBids(auctionAddr):
